@@ -14,7 +14,7 @@ const getSteamFeatured = async (req, res) => {
     return featuredCategoriesJson;
 }
 
-let createWebhook = async (releasesJson) => {
+const createWebhook = async (releasesJson) => {
     let data = {
         "username": 'JavaScript Bot',
         "avatar_url": "https://oyster.ignimgs.com/mediawiki/apis.ign.com/genshin-impact/8/81/Wanderer_%28Scaramouche%29_Guide.jpg",
