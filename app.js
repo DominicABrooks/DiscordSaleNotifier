@@ -27,7 +27,7 @@ const createWebhook = async (specialsJson) => {
     // Create discord bot header
     let data = {
         "username": 'Steam Specials Bot',
-        "avatar_url": "https://oyster.ignimgs.com/mediawiki/apis.ign.com/genshin-impact/8/81/Wanderer_%28Scaramouche%29_Guide.jpg",
+        "avatar_url": "https://cdn-icons-png.flaticon.com/512/220/220223.png",
         "embeds": [],
     }
 
