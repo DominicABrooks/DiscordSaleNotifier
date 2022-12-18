@@ -21,7 +21,7 @@ const getSteamFeatured = async (req, res) => {
  * 
  * Description: Use passed specials json to create webhook and pass to postToDiscord.
  * 
- * @param {JSON} specialsJson JSON from specials section of featured categories streamworks api.
+ * @param {JSON} specialsJson    JSON from specials section of featured categories streamworks api.
  */
 const createWebhook = async (specialsJson) => {
     // Create discord bot header
@@ -104,7 +104,7 @@ const createWebhook = async (specialsJson) => {
  * 
  * Description: Post passed webhook JSON to Discord webhook urls from ./webhooks
  * 
- * @param {JSON} data formatted webhook JSON formatted for Discord embed formatting
+ * @param {JSON} data    webhook JSON formatted for Discord embed formatting
  * @link https://discordjs.guide/popular-topics/embeds.html#using-an-embed-object
  */
 const postToDiscord = async (data) => {
