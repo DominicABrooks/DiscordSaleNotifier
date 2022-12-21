@@ -1,6 +1,6 @@
 # Discord Steam Sale Notifier
 Simple node application to fetch from steamworks api and post to a Discord webhook when new specials go live.
-![Untitled](https://user-images.githubusercontent.com/51772450/208909372-14931855-6fcc-47f6-9b20-dfe92b6a03cf.png)
+![Untitled](https://user-images.githubusercontent.com/51772450/209007740-594c6448-e763-4e58-b60d-cfa26d6917d8.png)
 
 ## Guide 
 
