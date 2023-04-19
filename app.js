@@ -11,7 +11,7 @@ const getCurrentSpecials = async () => {
 
 // Fetch from steampowered storefront api and return json object
 const getSteamFeatured = async (req, res) => {
-    let featuredCategories = await fetch(`https://store.steampowered.com/api/featuredcategories`)
+    let featuredCategories = await fetch(`https://store.steampowered.com/api/featuredcategories?cc=US`)
     let featuredCategoriesJson = await featuredCategories.json();
     return featuredCategoriesJson;
 }
