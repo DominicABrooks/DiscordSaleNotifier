@@ -61,7 +61,7 @@ const createEmbed = (specialsJson) => {
     // Remove expired deals from tracking
     removeExpired();
 
-    // Jsonify tracking list, print, and write to tracking json
+    // Jsonify tracking list, and write to tracking json
     var track = JSON.stringify(tracking);
     fs.writeFileSync("./tracking.json", track);
 
@@ -92,6 +92,6 @@ const removeExpired = () => {
 }
 
 module.exports = {
-    createEmbed,
+    createEmbed
 };
   

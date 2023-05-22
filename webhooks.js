@@ -23,5 +23,5 @@ const postToDiscord = async (data) => {
 }
 
 module.exports = {
-    postToDiscord,
+    postToDiscord
 };

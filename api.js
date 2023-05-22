@@ -11,5 +11,5 @@ const getCurrentSpecials = async () => {
 };
 
 module.exports = {
-  getCurrentSpecials,
+  getCurrentSpecials
 };
