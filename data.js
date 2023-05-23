@@ -54,7 +54,7 @@ const createEmbed = (specialsJson) => {
             i++;
             let id = game.id;
             let expireEpoch = game.discount_expiration;
-            tracking[tracking.length] = {"id": id, "expires": expireEpoch};
+            tracking.push({"id": id, "expires": expireEpoch});
         }
     });
 
@@ -62,8 +62,8 @@ const createEmbed = (specialsJson) => {
     removeExpired();
 
     // Jsonify tracking list, and write to tracking json
-    var track = JSON.stringify(tracking);
-    fs.writeFileSync("./tracking.json", track);
+    let serializedTracking = JSON.stringify(tracking);
+    fs.writeFileSync("./tracking.json", serializedTracking);
 
     return data;
 }
