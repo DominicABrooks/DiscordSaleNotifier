@@ -10,7 +10,6 @@ const webhookURLs = require('./webhooks.json');
  */
 const postToDiscord = async (data) => {
     webhookURLs.forEach(async WEBHOOK_URL => {
-        console.log("New Specials: " + data.embeds);
         await fetch(WEBHOOK_URL.url, {
             method: 'POST',
             body: JSON.stringify(data),
