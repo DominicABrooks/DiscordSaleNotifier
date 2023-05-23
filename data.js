@@ -5,7 +5,7 @@ const tracking = require('./tracking.json');
 /**
  * Summary: Create embed from specials JSON
  * 
- * Description: Use passed specials json to create embed and pass to postToDiscord.
+ * Description: Use passed specials json to create payload for embed
  * 
  * @param {JSON} specialsJson JSON from specials section of featured categories streamworks api.
  */

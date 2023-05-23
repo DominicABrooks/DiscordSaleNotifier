@@ -1,3 +1,10 @@
+/**
+ * Summary: Retrieve json of special items
+ * 
+ * Description: Fetch from steampowered api, jsonify and return json or undefined if error occured
+ * 
+ * @return {JSON} json object of special items
+ */
 const getCurrentSpecials = async () => {
   try {
     const response = await fetch('https://store.steampowered.com/api/featuredcategories?cc=US');
