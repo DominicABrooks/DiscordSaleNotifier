@@ -2,26 +2,36 @@ const api = require('./api');
 const data = require('./data');
 const webhooks = require('./webhooks');
 
+/**
+ * Summary: Update Specials and Post to Discord
+ */
 const updateSpecials = async () => {
-    try {
-        const specials = await api.getCurrentSpecials();
+    // Retrieve the current specials from api
+    const specials = await api.getCurrentSpecials();
 
-        const payload = data.createEmbed(specials);
-      
-        if(payload.embeds && payload.embeds.length > 0)
-        {
-            console.log("New specials found: ")
-            payload.embeds.forEach((embed) => console.log(embed.title));
-            webhooks.postToDiscord(payload);
-        }
-        else
-        {
-            console.log("No new specials found!");
-        }
-    } catch (error) {
-        console.error('Error updating specials:', error);
+    // Create an embed payload using retrieved specials
+    const payload = data.createEmbed(specials);
+    
+    // Handle posting payload to Discord
+    handleDiscordPost(payload);
+};
+
+/** 
+ * Summary: Handle Discord Post
+ */
+const handleDiscordPost = (payload) => {
+    if(payload.embeds && payload.embeds.length > 0)
+    {
+        console.log("New specials found: ")
+        payload.embeds.forEach((embed) => console.log(`\t- ${embed.title}`));
+
+        webhooks.postToDiscord(payload);
     }
-  };
+    else
+    {
+        console.log("No new specials found!");
+    }
+};
 
 // Initial request, update every 100,000 milliseconds
 updateSpecials();
