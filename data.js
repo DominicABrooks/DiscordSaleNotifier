@@ -17,46 +17,37 @@ const createEmbed = (specialsJson) => {
         "embeds": [],
     }
 
-    // Attempt to create new embed for each game in steam specials
-    let i = 0;
-    specialsJson.forEach(async (game) => {
-        if(tracking.find(tracking => tracking.id == game.id))
-        {
+    // Attempt to create a new embed for each game in Steam specials
+    specialsJson.forEach(async (game, index) => {
+        if (tracking.find(tracking => tracking.id == game.id)) {
             console.log("Game ID " + game.id + " already tracked");
-        }
-        else
-        {
-            var expires = new Date(game.discount_expiration * 1000).toLocaleString()
-            if(data.embeds.length >= 10)
-            {
+        } else {
+            const expires = new Date(game.discount_expiration * 1000).toLocaleString();
+            if (data.embeds.length >= 10) {
                 postToDiscord(data);
                 data.embeds = [];
-                i = 0;
+                index = 0; // Reset index to 0
             }
-
-            data["embeds"][i] = 
-            {
+        
+            data.embeds[index] = {
                 "title": game.name,
                 "description": "~~$" + (game.original_price / 100).toFixed(2) +
                 "~~\n" + "$" + (game.final_price / 100).toFixed(2) + " (-" + game.discount_percent + "%)",
                 "url": "https://store.steampowered.com/app/" + game.id,
                 "color": null,
-                "footer": 
-                {
-                    "text": "Last until " + expires
+                "footer": {
+                "text": "Last until " + expires
                 },
-                "image": 
-                {
-                    "url": game.header_image
+                "image": {
+                "url": game.header_image
                 }
-            }
-
-            i++;
+            };
+        
             let id = game.id;
             let expireEpoch = game.discount_expiration;
-            tracking.push({"id": id, "expires": expireEpoch});
+            tracking.push({ "id": id, "expires": expireEpoch });
         }
-    });
+    });  
 
     // Remove expired deals from tracking
     removeExpired();
