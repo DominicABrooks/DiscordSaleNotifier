@@ -13,24 +13,7 @@ const updateSpecials = async () => {
     const payload = data.createEmbed(specials);
     
     // Handle posting payload to Discord
-    handleDiscordPost(payload);
-};
-
-/** 
- * Summary: Handle Discord Post
- */
-const handleDiscordPost = (payload) => {
-    if(payload.embeds && payload.embeds.length > 0)
-    {
-        console.log("New specials found: ")
-        payload.embeds.forEach((embed) => console.log(`\t- ${embed.title}`));
-
-        webhooks.postToDiscord(payload);
-    }
-    else
-    {
-        console.log("No new specials found!");
-    }
+    webhooks.handleDiscordPost(payload);
 };
 
 // Initial request, update every 100,000 milliseconds

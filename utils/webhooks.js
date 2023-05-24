@@ -21,6 +21,23 @@ const postToDiscord = async (data) => {
     });
 }
 
+/** 
+ * Summary: Handle Discord Post
+ */
+const handleDiscordPost = (payload) => {
+    if(payload.embeds && payload.embeds.length > 0)
+    {
+        console.log("New specials found: ")
+        payload.embeds.forEach((embed) => console.log(`\t- ${embed.title}`));
+
+        webhooks.postToDiscord(payload);
+    }
+    else
+    {
+        console.log("No new specials found!");
+    }
+};
+
 module.exports = {
-    postToDiscord
+    handleDiscordPost
 };
