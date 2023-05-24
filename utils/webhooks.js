@@ -1,4 +1,4 @@
-const webhookURLs = require('./webhooks.json');
+const webhookURLs = require('../webhooks.json');
 
 /**
  * Summary: Post to Discord

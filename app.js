@@ -1,6 +1,6 @@
-const api = require('./api');
-const data = require('./data');
-const webhooks = require('./webhooks');
+const api = require('./utils/api');
+const data = require('./utils/data');
+const webhooks = require('./utils/webhooks');
 
 /**
  * Summary: Update Specials and Post to Discord

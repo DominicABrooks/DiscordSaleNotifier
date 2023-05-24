@@ -1,6 +1,6 @@
 const fs = require('fs');
 
-const tracking = require('./tracking.json');
+const tracking = require('../tracking.json');
 
 /**
  * Summary: Create embed from specials JSON
