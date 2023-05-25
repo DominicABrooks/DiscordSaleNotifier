@@ -20,7 +20,7 @@ const createEmbed = (specialsJson) => {
     // Attempt to create a new embed for each game in Steam specials
     specialsJson.forEach(async (game, index) => {
         if (tracking.find(tracking => tracking.id == game.id)) {
-            console.log("Game ID " + game.id + " already tracked");
+            console.log("- Game ID " + game.id + " already tracked");
         } else {
             const expires = new Date(game.discount_expiration * 1000).toLocaleString();
             if (data.embeds.length >= 10) {
