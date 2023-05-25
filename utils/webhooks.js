@@ -30,7 +30,7 @@ const handleDiscordPost = (payload) => {
         console.log("New specials found: ")
         payload.embeds.forEach((embed) => console.log(`\t- ${embed.title}`));
 
-        webhooks.postToDiscord(payload);
+        postToDiscord(payload);
     }
     else
     {
