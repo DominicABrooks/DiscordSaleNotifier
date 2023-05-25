@@ -17,6 +17,4 @@ const getCurrentSpecials = async () => {
   }
 };
 
-module.exports = {
-  getCurrentSpecials
-};
+module.exports = { getCurrentSpecials };

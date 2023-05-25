@@ -38,6 +38,4 @@ const handleDiscordPost = (payload) => {
     }
 };
 
-module.exports = {
-    handleDiscordPost
-};
+module.exports = { handleDiscordPost };

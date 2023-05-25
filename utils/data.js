@@ -82,7 +82,5 @@ const removeExpired = () => {
     });
 }
 
-module.exports = {
-    createEmbed
-};
+module.exports = { createEmbed };
   
