@@ -1,4 +1,5 @@
 const webhookURLs = require('../webhooks.json');
+const chalk = require('chalk');
 
 /**
  * Summary: Post to Discord
@@ -27,14 +28,14 @@ const postToDiscord = async (data) => {
 const handleDiscordPost = (payload) => {
     if(payload.embeds && payload.embeds.length > 0)
     {
-        console.log("New specials found: ")
-        payload.embeds.forEach((embed) => console.log(`- ${embed.title}`));
+        console.log(chalk.bold.blue("New specials found: "))
+        payload.embeds.forEach((embed) => console.log(chalk.green(`- ${embed.title}`)));
 
         postToDiscord(payload);
     }
     else
     {
-        console.log("No new specials found!");
+        console.log(chalk.bold.blue("No new specials found!"));
     }
 };
 

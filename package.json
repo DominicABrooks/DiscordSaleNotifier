@@ -10,6 +10,7 @@
   "author": "Dominic Brooks",
   "license": "ISC",
   "dependencies": {
+    "chalk": "^4.0.0",
     "express": "^4.18.2",
     "mongodb": "^4.12.1",
     "node-fetch": "^3.3.0",

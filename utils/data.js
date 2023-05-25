@@ -1,4 +1,5 @@
 const fs = require('fs');
+const chalk = require('chalk');
 
 const tracking = require('../tracking.json');
 
@@ -17,10 +18,11 @@ const createEmbed = (specialsJson) => {
         "embeds": [],
     }
 
+    console.log(chalk.italic("Looking for new specials..."))
     // Attempt to create a new embed for each game in Steam specials
     specialsJson.forEach(async (game, index) => {
         if (tracking.find(tracking => tracking.id == game.id)) {
-            console.log("- Game ID " + game.id + " already tracked");
+            console.log(chalk.dim.gray("- Game ID " + game.id + " already tracked"));
         } else {
             const expires = new Date(game.discount_expiration * 1000).toLocaleString();
             if (data.embeds.length >= 10) {
