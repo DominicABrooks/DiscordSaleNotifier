@@ -5,7 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "node --no-warnings app.js",
+    "add-webhook": "node ./utils/add-webhook.js $1"
   },
   "author": "Dominic Brooks",
   "license": "ISC",
