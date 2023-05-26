@@ -65,6 +65,7 @@ const removeExpired = () => {
     // Remove expired deals
     fs.readFile("./tracking.json", (err, data) => {
         if (err) throw err;
+        
         var date = Math.floor(Date.now() / 1000);
         let obj = JSON.parse(data);
 
