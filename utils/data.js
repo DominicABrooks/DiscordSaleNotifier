@@ -31,7 +31,7 @@ const createEmbed = (specialsJson) => {
                 index = 0; // Reset index to 0
             }
         
-            data.embeds[index] = {
+            data.embeds.push( {
                 "title": game.name,
                 "description": "~~$" + (game.original_price / 100).toFixed(2) +
                 "~~\n" + "$" + (game.final_price / 100).toFixed(2) + " (-" + game.discount_percent + "%)",
@@ -43,7 +43,7 @@ const createEmbed = (specialsJson) => {
                 "image": {
                 "url": game.header_image
                 }
-            };
+            });
         
             let id = game.id;
             let expireEpoch = game.discount_expiration;
