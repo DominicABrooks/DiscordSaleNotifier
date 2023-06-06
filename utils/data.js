@@ -1,5 +1,6 @@
 const fs = require('fs');
 const chalk = require('chalk');
+const webhooks = require('./webhooks');
 
 const tracking = require('../tracking.json');
 
@@ -25,10 +26,12 @@ const createEmbed = (specialsJson) => {
             console.log(chalk.dim.gray("- Game ID " + game.id + " already tracked"));
         } else {
             const expires = new Date(game.discount_expiration * 1000).toLocaleString();
+            
+            // If reached maximum embed count, post, and create a new payload
             if (data.embeds.length >= 10) {
-                postToDiscord(data);
+                webhooks.postToDiscord(data);
                 data.embeds = [];
-                index = 0; // Reset index to 0
+                index = 0;
             }
         
             data.embeds.push( {
