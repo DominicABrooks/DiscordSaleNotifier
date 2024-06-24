@@ -7,7 +7,7 @@ const pool = new Pool({
   host: config.DB_HOST,
   user: config.DB_USER,
   password: config.DB_PASS,
-  port: config.DB_PORT,
+  port: Number(config.DB_PORT),
   database: config.DB_NAME,
   max: 20,
   idleTimeoutMillis: 30000,

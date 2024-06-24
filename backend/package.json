@@ -6,8 +6,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "setup:dev": "set NODE_ENV=development&& npx tsx src/db/migrations/setup_db.ts",
-    "dev": "set NODE_ENV=development&& npx tsx src/server.ts"
+    "build": "tsc",
+    "setup:dev": "set NODE_ENV=development&& node dist/db/migrations/setup_db.js",
+    "dev": "set NODE_ENV=development&& node dist/server.js"
   },
   "author": "Dominic Brooks",
   "license": "ISC",
@@ -19,7 +20,10 @@
   },
   "keywords": [],
   "devDependencies": {
+    "@types/express": "^4.17.21",
     "@types/node": "^20.14.8",
+    "@types/pg": "^8.11.6",
+    "@types/validator": "^13.12.0",
     "typescript": "^5.5.2"
   }
 }

@@ -8,6 +8,7 @@ node_modules
 build
 
 # misc
+dist
 .DS_Store
 .env.development
 .env.production
