@@ -1,0 +1,25 @@
+{
+  "name": "steamsaleswebhook",
+  "version": "0.0.1",
+  "description": "Pull from Steamworks api to post Discord webhooks to personal Discord when good sales happen",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "setup:dev": "set NODE_ENV=development&& npx tsx src/db/migrations/setup_db.ts",
+    "dev": "set NODE_ENV=development&& npx tsx src/server.ts"
+  },
+  "author": "Dominic Brooks",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "pg": "^8.12.0",
+    "validator": "^13.12.0"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "@types/node": "^20.14.8",
+    "typescript": "^5.5.2"
+  }
+}
