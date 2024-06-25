@@ -1,12 +1,13 @@
 import path from 'path';
-import pool from '../db';
+import pool from '../db.js';
 import fs from 'node:fs/promises'
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
 
-const filePath = path.resolve(__dirname, '../scripts/create_webhook_table.sql');
+// Resolve the path by moving up one level from 'dist' to 'backend', then into 'db/scripts'
+const filePath = path.resolve(__dirname, '../../../db/scripts/create_webhook_table.sql');
 
 try {
     // Read and parse the SQL queries as a string

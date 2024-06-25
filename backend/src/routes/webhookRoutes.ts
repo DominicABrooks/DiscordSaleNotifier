@@ -1,7 +1,7 @@
 import express from 'express';
 import validator from 'validator';
-import pool from '../db/db';
-import { validateWebhookURL } from '../middleware/validateWebhookURL';
+import pool from '../../db/db.js';
+import { validateWebhookURL } from '../middleware/validateWebhookURL.js';
 
 const webhookRouter = express.Router();
 
@@ -34,7 +34,7 @@ webhookRouter.delete('/delete', validateWebhookURL, async (req, res) => {
     
         const result = await pool.query(query, values);
   
-        if (result.rowCount > 0) {
+        if (result.rowCount && result.rowCount > 0) {
             res.status(200).send({
             message: `Webhook with URL ${webhook} deleted successfully`,
             });

@@ -1,6 +1,7 @@
 import validator from 'validator';
+import { Request, Response, NextFunction } from 'express';
 
-export function validateWebhookURL(req, res, next) {
+export function validateWebhookURL(req: Request, res: Response, next: NextFunction) {
   const { webhook } = req.body;
 
   // Validate webhook URL
