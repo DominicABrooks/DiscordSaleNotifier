@@ -10,6 +10,8 @@ import Footer from './Components/Footer';
 import Header from './Components/Header';
 import AddTrackingForm from './Components/AddTrackingForm'; 
 import DeleteTrackingForm from './Components/DeleteTrackingForm'; 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
@@ -17,6 +19,7 @@ function App() {
       <Header />
       <CardTabs />
       <Footer />
+      <ToastContainer position="top-right" autoClose={5000}/>
     </Container>
   );
 }
