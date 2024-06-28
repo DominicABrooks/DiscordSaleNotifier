@@ -6,22 +6,16 @@
 ![Untitled](https://user-images.githubusercontent.com/51772450/209007740-594c6448-e763-4e58-b60d-cfa26d6917d8.png)
 
 # Getting started
-1. **Install PostgreSQL:**
-   - Download and install PostgreSQL from [PostgreSQL Downloads](https://www.postgresql.org/download/).
-   - Follow the installation instructions for your operating system.
+1. **Set up PostgreSQL:**
+- Create a PostgreSQL database
 
-2. **Set Up a Database:**
-   - Open PostgreSQL and create a new database. You can use a graphical tool like pgAdmin or the command line:
-     ```
-     createdb mydatabase
-     ```
-3. **Set Up Environment Variables**
+2. **Set Up Environment Variables**
 
-4. **Frontend:**
+3. **Frontend:**
 - `npm install`: Install frontend dependencies.
 - `npm run start`: Start the frontend development server.
 
-5. **Backend:**
+4. **Backend:**
 - `npm install`: Install backend dependencies.
 - `npm run build`: Build typescript files.
 - `npm run setup:dev`: Setup development environment for backend.
