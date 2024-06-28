@@ -6,20 +6,19 @@
 ![Untitled](https://user-images.githubusercontent.com/51772450/209007740-594c6448-e763-4e58-b60d-cfa26d6917d8.png)
 
 # Getting started
-- Clone the repository
-```
-git clone https://github.com/DominicABrooks/Discord-SaleNotifier.git
-```
-- Install dependencies
-```
-cd <project_name>
-npm install
-```
-- Add webhook (if you're having issues creating a Discord webhook, follow this [guide](https://support.discord.com/hc/en-us/articles/360045093012-Server-Integrations-Page))
-```
-npm run add-webhook -- your-url-here
-```
-- Build and run the project!
-```
-npm start
-```
+1. **Set up PostgreSQL:**
+- Create a PostgreSQL database
+
+2. **Set Up Environment Variables**
+
+3. **Frontend:**
+- `npm install`: Install frontend dependencies.
+- `npm run start`: Start the frontend development server.
+
+4. **Backend:**
+- `npm install`: Install backend dependencies.
+- `npm run build`: Build typescript files.
+- `npm run setup:dev`: Setup development environment for backend.
+- `npm run dev`: Start the backend development server.
+
+This setup should get your project running with both frontend and backend components integrated with PostgreSQL.
