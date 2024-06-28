@@ -5,21 +5,32 @@
 
 ![Untitled](https://user-images.githubusercontent.com/51772450/209007740-594c6448-e763-4e58-b60d-cfa26d6917d8.png)
 
+![image](https://github.com/DominicABrooks/DiscordSaleNotifier/assets/51772450/6f1a7bdc-9bb6-4ca0-8fd9-899980431441)
+
+
+
 # Getting started
-- Clone the repository
-```
-git clone https://github.com/DominicABrooks/Discord-SaleNotifier.git
-```
-- Install dependencies
-```
-cd <project_name>
-npm install
-```
-- Add webhook (if you're having issues creating a Discord webhook, follow this [guide](https://support.discord.com/hc/en-us/articles/360045093012-Server-Integrations-Page))
-```
-npm run add-webhook -- your-url-here
-```
-- Build and run the project!
-```
-npm start
-```
+1. **Install PostgreSQL:**
+   - Download and install PostgreSQL from [PostgreSQL Downloads](https://www.postgresql.org/download/).
+   - Follow the installation instructions for your operating system.
+
+2. **Set Up a Database:**
+   - Open PostgreSQL and create a new database. You can use a graphical tool like pgAdmin or the command line:
+     ```
+     createdb mydatabase
+     ```
+3. **Set Up Environment Variables:**
+
+- **Frontend:**
+- `npm install`: Install frontend dependencies.
+- `npm run start`: Start the frontend development server.
+- `npm run build`: Build the frontend for production deployment.
+
+- **Backend:**
+- `npm install`: Install backend dependencies.
+- `npm run setup:dev`: Setup development environment for backend.
+- `npm run dev`: Start the backend development server.
+
+Also, configure your backend environment variables such as database connection strings in your `.env` files as needed.
+
+This setup should get your project running with both frontend and backend components integrated with PostgreSQL.
