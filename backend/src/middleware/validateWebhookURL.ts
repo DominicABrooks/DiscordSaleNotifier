@@ -1,10 +1,16 @@
 import validator from 'validator';
 import { Request, Response, NextFunction } from 'express';
 
+/**
+ * Middleware to validate the webhook URL.
+ * 
+ * @param req - The HTTP request object.
+ * @param res - The HTTP response object.
+ * @param next - The next middleware function.
+ */
 export function validateWebhookURL(req: Request, res: Response, next: NextFunction) {
   const { webhook } = req.body;
 
-        matches: 
   // Validate webhook URL
   if (!validator.isURL(webhook, { require_protocol: true,  })) {
     return res.status(400).json({
