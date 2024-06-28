@@ -17,8 +17,6 @@ test.describe('Home Page Static Elements Tests', () => {
     await page.close();
   });
 
-  // Verify static elements
-  // -----------------------
   test('Verify static header Elements', async () => {
     await homePage.assertLogoImageVisible(); 
     await homePage.assertHeaderText("Steam Sale Notifier");
@@ -37,8 +35,6 @@ test.describe('Home Page Static Elements Tests', () => {
     await homePage.assertPageTitleText("Discord Steam Sale Notifier");
   });
 
-  // Links work
-  // -----------------------
   test('Verify functionality of "Intro to Webhooks" article link', async () => {
     // Get browser context
     const context = page.context();
@@ -61,7 +57,7 @@ test.describe('Home Page Static Elements Tests', () => {
 });
 
 test.describe('Webhook Creation & Deletion Tests', () => {
-  // Annotate entire file as serial.
+  // Annotate as serial.
   test.describe.configure({ mode: 'serial' });
 
   let page: any;
@@ -139,7 +135,6 @@ test.describe('Webhook Client Validation Tests', () => {
   });
 
   test('Verify cannot input empty Discord Webhook URL', async () => {
-
     await homePage.fillWebhookTextbox("");
     await homePage.clickStartTrackingButton();
     await homePage.assertToastContainerText("Invalid Webhook");
@@ -148,7 +143,6 @@ test.describe('Webhook Client Validation Tests', () => {
   });
 
   test('Verify cannot input invalid Discord Webhook URL', async () => {
-
     await homePage.fillWebhookTextbox(INVALID_DISCORD_WEBHOOK_URL);
     await homePage.clickStartTrackingButton();
     await homePage.assertToastContainerText("Failed to fetch webhook URL");

@@ -9,7 +9,7 @@ const webhookDb = new WebhookDbPage();
 webhookApi.init();
 
 test.describe('API Webhook Creation & Deletion Tests', () => {
-    // Annotate entire file as serial.
+    // Annotate as serial.
     test.describe.configure({ mode: 'serial' });
 
     test('Verify adding webhook tracking', async () => {

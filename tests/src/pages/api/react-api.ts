@@ -1,29 +1,39 @@
-import { APIRequestContext, APIResponse, Page, request } from '@playwright/test';
+import { APIResponse, Page } from '@playwright/test';
 
 export default class ReactApiPage {
-    private apiRequestContext: APIRequestContext;
     private page: Page;
 
-    constructor(page: Page)
-    {
+    constructor(page: Page) {
         this.page = page;
     }
 
-    async getFavIcon(): Promise<APIResponse> {
-        const response = await this.page.request.get('/favicon.ico');
-
+    /**
+     * Makes a GET request to fetch the favicon.ico.
+     * @param headers Optional headers to include in the request.
+     * @returns A promise that resolves to an APIResponse object representing the response.
+     */
+    async getFavIcon(headers?: Record<string, string>): Promise<APIResponse> {
+        const response = await this.page.request.get('/favicon.ico', { headers });
         return response;
     }
 
-    async getLogo(): Promise<APIResponse> {
-        const response = await this.page.request.get('/logo.png');
-
+    /**
+     * Makes a GET request to fetch the logo.png.
+     * @param headers Optional headers to include in the request.
+     * @returns A promise that resolves to an APIResponse object representing the response.
+     */
+    async getLogo(headers?: Record<string, string>): Promise<APIResponse> {
+        const response = await this.page.request.get('/logo.png', { headers });
         return response;
     }
 
-    async getDiscordSvg(): Promise<APIResponse> {
-        const response = await this.page.request.get('/discord.svg');
-
+    /**
+     * Makes a GET request to fetch the discord.svg.
+     * @param headers Optional headers to include in the request.
+     * @returns A promise that resolves to an APIResponse object representing the response.
+     */
+    async getDiscordSvg(headers?: Record<string, string>): Promise<APIResponse> {
+        const response = await this.page.request.get('/discord.svg', { headers });
         return response;
     }
 }
