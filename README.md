@@ -24,13 +24,11 @@
 - **Frontend:**
 - `npm install`: Install frontend dependencies.
 - `npm run start`: Start the frontend development server.
-- `npm run build`: Build the frontend for production deployment.
 
 - **Backend:**
 - `npm install`: Install backend dependencies.
+- `npm run build`: Build typescript files.
 - `npm run setup:dev`: Setup development environment for backend.
 - `npm run dev`: Start the backend development server.
-
-Also, configure your backend environment variables such as database connection strings in your `.env` files as needed.
 
 This setup should get your project running with both frontend and backend components integrated with PostgreSQL.
