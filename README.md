@@ -1,5 +1,5 @@
 # Discord Steam Sale Notifier
-> Simple node application to fetch from steamworks api and post to a Discord webhook when new specials go live
+> Full-stack Typescript application where users can input their webhooks to receive live notifications about new Steam sales.
 
 ![License](https://img.shields.io/badge/license-MIT-green)
 
