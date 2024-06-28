@@ -3,7 +3,7 @@ import HomePage from '../pages/public/home.page';
 import WebhookDbPage from '../pages/db/webhook-db.page';
 import config from '../config/config';
 
-test.describe('Home Page Static Elements Tests', () => {
+test.describe('Static Elements Tests', () => {
   let page: Page;
   let homePage: HomePage;
 
@@ -17,7 +17,7 @@ test.describe('Home Page Static Elements Tests', () => {
     await page.close();
   });
 
-  test('Verify static header Elements', async () => {
+  test('Verify static header elements', async () => {
     await homePage.assertLogoImageVisible(); 
     await homePage.assertHeaderText("Steam Sale Notifier");
     await homePage.assertSubheadingText("Stay updated with Discord notifications for new Steam sales!");
