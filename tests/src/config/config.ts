@@ -30,6 +30,8 @@ dotenv.config({
  * @property {string} DB_PORT - The database port.
  * @property {string} DB_NAME - The database name.
  * @property {string} DISCORD_WEBHOOK_URL - Valid discord webhook URL.
+ * @property {string} DISCORD_WEBHOOK_URL_FOR_API_TESTS - Valid discord webhook URL.
+ * @property {string} API_URL - URL API is hosted at.
  * 
  * Usage:
  * Import this configuration object wherever you need access to these settings.
@@ -46,4 +48,6 @@ export default {
     DB_PORT:  process.env.DB_PORT || "",
     DB_NAME:  process.env.DB_NAME || "",
     DISCORD_WEBHOOK_URL: process.env.DISCORD_WEBHOOK_URL || "",
+    DISCORD_WEBHOOK_URL_FOR_API_TESTS: process.env.DISCORD_WEBHOOK_URL || "",
+    API_URL: process.env.API_URL || "",
 };

@@ -1,8 +1,7 @@
-import { test, expect, Page } from '@playwright/test';
+import { test, Page } from '@playwright/test';
 import HomePage from '../pages/public/home.page';
 import WebhookDbPage from '../pages/db/webhook-db.page';
 import config from '../config/config';
-import assert from 'assert';
 
 test.describe('Home Page Static Elements Tests', () => {
   let page: Page;
@@ -165,7 +164,6 @@ test.describe('Webhook Client Validation Tests', () => {
     await webhookDb.assertWebhookDoesNotExist(NOT_DISCORD_WEBHOOK_URL);
   });
 
-  
   test('Verify cannot delete empty Discord Webhook URL', async () => {
     await homePage.clickDeleteTrackingTab();
     await homePage.fillWebhookTextbox("");
