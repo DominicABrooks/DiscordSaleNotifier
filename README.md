@@ -15,13 +15,13 @@
      ```
      createdb mydatabase
      ```
-3. **Set Up Environment Variables:**
+3. **Set Up Environment Variables**
 
-- **Frontend:**
+4. **Frontend:**
 - `npm install`: Install frontend dependencies.
 - `npm run start`: Start the frontend development server.
 
-- **Backend:**
+5. **Backend:**
 - `npm install`: Install backend dependencies.
 - `npm run build`: Build typescript files.
 - `npm run setup:dev`: Setup development environment for backend.
