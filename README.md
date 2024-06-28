@@ -5,10 +5,6 @@
 
 ![Untitled](https://user-images.githubusercontent.com/51772450/209007740-594c6448-e763-4e58-b60d-cfa26d6917d8.png)
 
-![image](https://github.com/DominicABrooks/DiscordSaleNotifier/assets/51772450/6f1a7bdc-9bb6-4ca0-8fd9-899980431441)
-
-
-
 # Getting started
 1. **Install PostgreSQL:**
    - Download and install PostgreSQL from [PostgreSQL Downloads](https://www.postgresql.org/download/).
