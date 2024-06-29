@@ -25,11 +25,9 @@ import { WebhookClient, APIMessage } from 'discord.js'
  *   .then(response => console.log('Message sent successfully:', response))
  *   .catch(err => console.error('Error sending message:', err));
  */
-const sendToDiscordWebhook = async (hookURL: string, payload: any): Promise<void> => {
-    const webhook = new WebhookClient({url: hookURL});
-    webhook.send(payload)
-    .catch(console.error);
-};
+const sendToDiscordWebhook = async (url: string, payload: any): Promise<void> => {
+    await new WebhookClient({ url }).send(payload);
+}
 
 /**
  * Sends a payload to a specified Discord webhook URL.
@@ -56,11 +54,9 @@ const sendToDiscordWebhook = async (hookURL: string, payload: any): Promise<void
  */
 const sendToDiscordWebhookBulk = async (hookUrls: string[], payload: any): Promise<void> => {
     try {
-        // Array to store all bottleneck tasks
-        const tasks = hookUrls.map(hookURL => () => sendToDiscordWebhook(hookURL, payload));
-
-        // Execute all tasks concurrently using bottleneck
-        await Promise.all(tasks.map(task => task()));
+        await Promise.all(hookUrls.map(url => 
+            sendToDiscordWebhook(url, payload).catch(console.error)
+        ));
 
         // Log success message
         console.log('Messages sent to Discord webhooks');
