@@ -1,6 +1,8 @@
 # Discord Steam Sale Notifier
 > Full-stack Typescript application where users can input their webhooks to receive live notifications about new Steam sales.
 
+![Untitled](https://github.com/DominicABrooks/DiscordSaleNotifier/assets/51772450/cc585844-bb85-455c-bee4-af9bda55a1d3)
+
 ![License](https://img.shields.io/badge/license-MIT-green)
 
 ![Untitled](https://user-images.githubusercontent.com/51772450/209007740-594c6448-e763-4e58-b60d-cfa26d6917d8.png)
