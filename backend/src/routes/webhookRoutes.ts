@@ -2,7 +2,7 @@ import express from 'express';
 import validator from 'validator';
 import pool from '../../db/db.js'; // Import the PostgreSQL pool instance for database operations
 import { validateWebhookURL } from '../middleware/validateWebhookURL.js'; // Import the middleware for validating webhook URLs
-import sendToDiscordWebhook from '../helpers/sendWebhook.js'; // Import the helper function to send messages to a Discord webhook
+import { sendToDiscordWebhook } from '../helpers/sendWebhook.js'; // Import the helper function to send messages to a Discord webhook
 import getFromWebhook from '../helpers/getWebhook.js';
 
 const webhookRouter = express.Router(); // Create a new router instance for handling webhook-related routes

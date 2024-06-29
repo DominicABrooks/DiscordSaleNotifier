@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-
+import steamworksCron from './cron-jobs/steamworksCron.js'
 import webhookRouter from './routes/webhookRoutes.js';
+
 
 const app = express();
 
@@ -28,6 +29,12 @@ app.use(express.json());
  * @see ./routes/webhookRoutes.js
  */
 app.use('/api/webhook', webhookRouter);
+
+/**
+ * Initialize and start the Steamworks cron job.
+ * This sets up a scheduled task to manage sales data and webhooks.
+ */
+steamworksCron('* * * * *');
 
 /**
  * Start the Express server and listen for connections on port 1337.
