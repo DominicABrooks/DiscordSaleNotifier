@@ -1,5 +1,6 @@
 import Bottleneck from 'bottleneck';
 import pool from '../../db/db.js'
+import { WebhookClient, APIMessage } from 'discord.js'
 
 /**
  * Sends a payload to a specified Discord webhook URL.
@@ -24,39 +25,12 @@ import pool from '../../db/db.js'
  *   .then(response => console.log('Message sent successfully:', response))
  *   .catch(err => console.error('Error sending message:', err));
  */
-const sendToDiscordWebhook = async (hookURL: string, payload: any): Promise<Response> => {
-    try {
-        // Send a POST request to the Discord webhook URL with the specified payload
-        const response = await fetch(hookURL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(payload) // Convert the payload to a JSON string
-        });
-
-        // Check if the response is not OK (status code outside the range 200-299)
-        if (!response.ok) {
-            const errorMessage = `Failed to send message to Discord webhook. Status: ${response.status}`;
-            console.error(errorMessage);
-            throw new Error(errorMessage);
-        }
-
-        // Return the response if the request was successful
-        return response;
-    } catch (err) {
-        // Log the error to the console and handle the error gracefully
-        console.error('Error sending message to Discord webhook:', err);
-        throw err; // Rethrow the error to propagate it upwards or handle as needed
-    }
+const sendToDiscordWebhook = async (hookURL: string, payload: any): Promise<void> => {
+    const webhook = new WebhookClient({url: hookURL});
+    webhook.send(payload)
+    .catch(console.error);
 };
 
-
-// Initialize Bottleneck instance with default settings
-let limiter = new Bottleneck({
-    maxConcurrent: 1, // Start with 1 concurrent request
-    minTime: 1000 // Default minimum time (1 second) between requests
-});
 /**
  * Sends a payload to a specified Discord webhook URL.
  * 
@@ -83,7 +57,7 @@ let limiter = new Bottleneck({
 const sendToDiscordWebhookBulk = async (hookUrls: string[], payload: any): Promise<void> => {
     try {
         // Array to store all bottleneck tasks
-        const tasks = hookUrls.map(hookURL => () => limiter.schedule(() => sendToDiscordWebhook(hookURL, payload)));
+        const tasks = hookUrls.map(hookURL => () => sendToDiscordWebhook(hookURL, payload));
 
         // Execute all tasks concurrently using bottleneck
         await Promise.all(tasks.map(task => task()));
@@ -94,22 +68,6 @@ const sendToDiscordWebhookBulk = async (hookUrls: string[], payload: any): Promi
         // Log the error to the console and rethrow it
         console.error('Error sending messages to Discord webhooks:', err);
     }
-};
-
-// Function to update limiter based on rate limit headers
-const updateLimiterFromHeaders = (headers: Headers): void => {
-    const limit = parseInt(headers.get('x-ratelimit-limit') || '5', 10); // Default to 5 if header not present
-    const remaining = parseInt(headers.get('x-ratelimit-remaining') || '0', 10);
-    const resetAfter = parseFloat(headers.get('x-ratelimit-reset-after') || '1');
-
-    // Calculate the minimum time between requests based on the rate limit
-    const minTime = remaining > 0 ? Math.ceil(resetAfter / remaining * 1000) : resetAfter * 1000;
-
-    // Update limiter with new settings
-    limiter = new Bottleneck({
-        maxConcurrent: 1, // Limit concurrent requests to 1
-        minTime: minTime || 1000 // Default to 1 second minimum time
-    });
 };
 
 /**
