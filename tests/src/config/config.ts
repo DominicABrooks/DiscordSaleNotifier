@@ -41,13 +41,13 @@ dotenv.config({
  * console.log(config.DB_HOST); // Access the DB_HOST environment variable
  */
 export default {
-    NODE_ENV : process.env.NODE_ENV || "",
-    DB_HOST : process.env.DB_HOST || "",
-    DB_USER : process.env.DB_USER || "",
-    DB_PASS:  process.env.DB_PASS || "",
-    DB_PORT:  process.env.DB_PORT || "",
-    DB_NAME:  process.env.DB_NAME || "",
-    DISCORD_WEBHOOK_URL: process.env.DISCORD_WEBHOOK_URL || "",
-    DISCORD_WEBHOOK_URL_FOR_API_TESTS: process.env.DISCORD_WEBHOOK_URL || "",
-    API_URL: process.env.API_URL || "",
+    NODE_ENV : process.env.NODE_ENV ?? "",
+    DB_HOST : process.env.DB_HOST ?? "",
+    DB_USER : process.env.DB_USER ?? "",
+    DB_PASS:  process.env.DB_PASS ?? "",
+    DB_PORT:  process.env.DB_PORT ?? "",
+    DB_NAME:  process.env.DB_NAME ?? "",
+    DISCORD_WEBHOOK_URL: process.env.DISCORD_WEBHOOK_URL ?? "",
+    DISCORD_WEBHOOK_URL_FOR_API_TESTS: process.env.DISCORD_WEBHOOK_URL ?? "",
+    API_URL: process.env.API_URL ?? "",
 };

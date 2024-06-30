@@ -15,7 +15,7 @@ function AddTrackingForm() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to create webhook');
+        throw new Error(errorData.error ?? 'Failed to create webhook');
       }
 
       // Simulating success toast notification
@@ -24,7 +24,7 @@ function AddTrackingForm() {
       });
     } catch (error) {
       // Simulating error toast notification
-      toast.error(error.message || 'Failed to create webhook', {
+      toast.error(error.message ?? 'Failed to create webhook', {
         position: 'top-right'
       });
     }

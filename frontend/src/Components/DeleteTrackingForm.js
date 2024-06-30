@@ -15,7 +15,7 @@ function DeleteTrackingForm() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to delete webhook');
+        throw new Error(errorData.error ?? 'Failed to delete webhook');
       }
 
       // Simulating success toast notification
@@ -24,7 +24,7 @@ function DeleteTrackingForm() {
       });
     } catch (error) {
       // Simulating error toast notification
-      toast.error(error.message || 'Failed to delete webhook', {
+      toast.error(error.message ?? 'Failed to delete webhook', {
         position: 'top-right'
       });
     }
