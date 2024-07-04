@@ -3,8 +3,8 @@ const formatSpecial = (special: any) => {
     const expires = new Date(special.discount_expiration * 1000).toLocaleString();
 
     const payload = {
-        "username": 'Steam Specials Bot',
-        "avatar_url": "https://cdn-icons-png.flaticon.com/512/220/220223.png",
+        "username": "Steam Specials Bot",
+        "avatarURL": "https://cdn-icons-png.flaticon.com/512/220/220223.png",
         "embeds": [{
             "title": special.name,
             "description": "~~$" + (special.original_price / 100).toFixed(2) +
@@ -17,7 +17,7 @@ const formatSpecial = (special: any) => {
             "image": {
             "url": special.header_image
             }
-        }],
+        }]
     }
     return payload;
 }
