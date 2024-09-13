@@ -8,22 +8,29 @@ import getFromWebhook from '../helpers/getWebhook.js';
 const webhookRouter = express.Router(); // Create a new router instance for handling webhook-related routes
 
 /**
- * Route to handle adding a new webhook URL to the database.
- * 
- * POST /api/webhook/create
- * 
- * - Validates the webhook URL using the `validateWebhookURL` middleware.
- * - Sends a message to the provided Discord webhook to confirm tracking.
- * - Checks if the webhook URL already exists in the database.
- * - If not, inserts the new webhook URL into the database.
- * 
- * Request Body:
- * @param {string} webhook - The Discord webhook URL to be added.
- * 
- * Responses:
- * - 200: Webhook added successfully.
- * - 400: Webhook already exists or initial POST to webhook failed.
- * - 500: Error inserting webhook into the database.
+ * @swagger
+ * /api/webhook/create:
+ *   post:
+ *     summary: Add a new webhook URL to the database
+ *     description: Adds a new webhook URL to the database. Validates the URL using the `validateWebhookURL` middleware. Sends a message to the provided Discord webhook to confirm tracking and checks if it already exists in the database. If the webhook URL is not already present, it inserts the new URL into the database.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               webhook:
+ *                 type: string
+ *                 description: The Discord webhook URL to be added.
+ *                 example: 'https://discord.com/api/webhooks/...'
+ *     responses:
+ *       200:
+ *         description: Webhook added successfully.
+ *       400:
+ *         description: Webhook already exists or initial POST to webhook failed.
+ *       500:
+ *         description: Error inserting webhook into the database.
  */
 webhookRouter.post('/create', validateWebhookURL, async (req, res) => {
     const { webhook } = req.body;
@@ -74,20 +81,29 @@ webhookRouter.post('/create', validateWebhookURL, async (req, res) => {
 });
 
 /**
- * Route to handle deleting an existing webhook URL from the database.
- * 
- * DELETE /api/webhook/delete
- * 
- * - Validates the webhook URL using the `validateWebhookURL` middleware.
- * - Deletes the webhook URL from the database if it exists.
- * 
- * Request Body:
- * @param {string} webhook - The Discord webhook URL to be deleted.
- * 
- * Responses:
- * - 200: Webhook deleted successfully.
- * - 404: Webhook not found in the database.
- * - 500: Error deleting webhook from the database.
+ * @swagger
+ * /api/webhook/delete:
+ *   delete:
+ *     summary: Delete an existing webhook URL
+ *     description: Deletes a webhook URL from the database. The request URL must be validated using the `validateWebhookURL` middleware before the webhook is deleted.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               webhook:
+ *                 type: string
+ *                 description: The Discord webhook URL to be deleted.
+ *                 example: 'https://discord.com/api/webhooks/...'
+ *     responses:
+ *       200:
+ *         description: Webhook deleted successfully.
+ *       404:
+ *         description: Webhook not found in the database.
+ *       500:
+ *         description: Error deleting webhook from the database.
  */
 webhookRouter.delete('/delete', validateWebhookURL, async (req, res) => {
     const { webhook } = req.body;

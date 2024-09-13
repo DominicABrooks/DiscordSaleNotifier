@@ -1,10 +1,31 @@
 import express from 'express';
 import cors from 'cors';
-import steamworksCron from './cron-jobs/steamworksCron.js'
+import steamworksCron from './cron-jobs/steamworksCron.js';
 import webhookRouter from './routes/webhookRoutes.js';
-
+import swaggerUi from 'swagger-ui-express';
+import swaggerJsdoc from 'swagger-jsdoc';
 
 const app = express();
+
+// Swagger setup
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'SteamSaleNotifier API Documentation',
+      version: '1.0.0',
+    },
+    servers: [
+      {
+        url: 'http://localhost:1337'
+      },
+    ],
+  },
+  apis: ["**/routes/*.js"], // Path to the API docs
+};
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions);
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 /**
  * Apply Cross-Origin Resource Sharing (CORS) middleware.
