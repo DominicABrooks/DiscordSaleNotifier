@@ -53,10 +53,10 @@ dotenv.config({
  * console.log(config.DB_HOST); // Access the DB_HOST environment variable
  */
 export default {
-    NODE_ENV : process.env.NODE_ENV,
-    DB_HOST : process.env.DB_HOST,
-    DB_USER : process.env.DB_USER,
-    DB_PASS:  process.env.DB_PASS,
-    DB_PORT:  process.env.DB_PORT,
-    DB_NAME:  process.env.DB_NAME,
+    NODE_ENV : String(process.env.NODE_ENV),
+    DB_HOST : String(process.env.DB_HOST),
+    DB_USER : String(process.env.DB_USER),
+    DB_PASS:  String(process.env.DB_PASS),
+    DB_PORT:  String(process.env.DB_PORT),
+    DB_NAME:  String(process.env.DB_NAME),
 };
