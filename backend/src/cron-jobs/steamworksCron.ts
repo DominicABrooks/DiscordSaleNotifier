@@ -70,7 +70,7 @@ async function addSaleToDatabase(id: string, expirationDate: string): Promise<vo
   }
 }
 
-const  steamworksCron = async (cronExpression: string) => {
+const steamworksCron = async (cronExpression: string) => {
   // Define your cron job schedule
   cron.schedule(cronExpression, async () => {
     console.log('Running cron job...');
