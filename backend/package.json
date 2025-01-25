@@ -7,14 +7,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "setup:dev": "set NODE_ENV=development&& node dist/db/migrations/setup_db.js",
-    "dev": "set NODE_ENV=development&& node dist/src/server.js"
+    "setup:dev": "cross-env NODE_ENV=development&& node dist/db/migrations/setup_db.js",
+    "dev": "cross-env NODE_ENV=development&& node dist/src/server.js"
   },
   "author": "Dominic Brooks",
   "license": "ISC",
   "dependencies": {
     "bottleneck": "^2.19.5",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "discord.js": "^14.15.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
