@@ -4,25 +4,89 @@ on:
     branches: [ main, master ]
   pull_request:
     branches: [ main, master ]
+
 jobs:
   test:
     timeout-minutes: 60
     runs-on: ubuntu-latest
+
+    # Service containers to run with `container-job`
+    services:
+      # Label used to access the service container
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: test
+          POSTGRES_USER: test
+          POSTGRES_DB: test
+        ports:
+          - 5432:5432
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      DB_USER: test
+      DB_NAME: test
+      DB_PASS: test
+      DB_HOST: localhost
+      DISCORD_WEBHOOK_URL_FOR_API_TESTS: ${{ secrets.WEBHOOK_URL_TEST }}
+      DISCORD_WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+      API_URL: http://localhost:1337
+
     steps:
-      working-directory: tests
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v4
-      with:
-        node-version: lts/*
-    - name: Install dependencies
-      run: npm ci
-    - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
-    - name: Run Playwright tests
-      run: npx playwright test
-    - uses: actions/upload-artifact@v4
-      if: always()
-      with:
-        name: playwright-report
-        path: playwright-report/
-        retention-days: 30
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies (backend)
+        run: npm ci
+        working-directory: backend
+
+      - name: Install dependencies (frontend)
+        run: npm ci
+        working-directory: frontend
+
+      - name: Install dependencies (tests)
+        run: npm ci
+        working-directory: tests
+
+      - name: Build backend
+        run: npm run build
+        working-directory: backend
+
+      - name: Setup backend
+        run: npm run setup:dev
+        working-directory: backend
+
+      - name: Run backend
+        # Run server in background (&)
+        # Sleep for a few seconds to ensure server is up and listening on the port before proceeding.
+        run: npm run dev & sleep 3
+        working-directory: backend
+      
+      - name: Run frontend
+        run: npm run start & sleep 3
+        working-directory: frontend
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+        working-directory: tests
+
+      - name: Run Playwright tests
+        run: npx playwright test --project chromium
+        working-directory: tests
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: tests/playwright-report/
+          retention-days: 30
