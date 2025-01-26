@@ -10,7 +10,7 @@ const TrackingForm = ({ formType, onSubmitForm }) => {
   // Function to check if the given URL is valid according to the specified pattern
   const checkIfValidDiscordWebhookUrl = (url) => {
     // Validate URL format (simple check for https://discord.com/api/webhooks/... format)
-    const isValid = /^https:\/\/discord\.com\/api\/webhooks\/\d{17,19}\/\S+$/.test(url);
+    const isValid = /^https:\/\/discord(app)?\.com\/api\/webhooks\/\d{17,19}\/\S+$/.test(url);
     setIsValidUrl(isValid);
 
     return isValid;
