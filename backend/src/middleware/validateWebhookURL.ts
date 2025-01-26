@@ -19,7 +19,7 @@ export function validateWebhookURL(req: Request, res: Response, next: NextFuncti
   }
 
   // Validate Discord webhook URL
-  if (!validator.matches(webhook, /^https:\/\/discord\.com\/api\/webhooks\/\d{17,19}\/\S+$/)) {
+  if (!validator.matches(webhook, /^https:\/\/discord(app)?\.com\/api\/webhooks\/\d{17,19}\/\S+$/)) {
     return res.status(400).json({
       error: 'Input Webhook is not a Discord Webhook URL'
     });
