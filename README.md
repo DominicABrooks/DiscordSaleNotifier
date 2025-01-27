@@ -1,7 +1,7 @@
-# Discord Steam Sale Notifier [![Playwright Tests](https://github.com/DominicABrooks/DiscordSaleNotifier/actions/workflows/playwright.yml/badge.svg)](https://github.com/DominicABrooks/DiscordSaleNotifier/actions/workflows/playwright.yml)
+# Discord Steam Sale Notifier [![Playwright Tests](https://github.com/DominicABrooks/DiscordSaleNotifier/actions/workflows/playwright.yml/badge.svg?branch=master)](https://github.com/DominicABrooks/DiscordSaleNotifier/actions/workflows/playwright.yml)
 > Full-stack Typescript application where users can input their webhooks to receive live notifications about new Steam sales.
 
-![Untitled](https://github.com/DominicABrooks/DiscordSaleNotifier/assets/51772450/cc585844-bb85-455c-bee4-af9bda55a1d3)
+![Untitled](https://github.com/user-attachments/assets/0999b983-8903-4971-b7d1-323c05c55599)
 
 ![License](https://img.shields.io/badge/license-MIT-green)
 
