@@ -28,7 +28,7 @@ test.describe('Static Elements Tests', () => {
   });
 
   test('Verify static footer elements', async () => {
-    await homePage.assertCopyRightNoticeText("© 2024 Steam Sale Notifier");
+    await homePage.assertCopyRightNoticeText("© 2025 Steam Sale Notifier");
   });
 
   test('Verify page title', async () => {

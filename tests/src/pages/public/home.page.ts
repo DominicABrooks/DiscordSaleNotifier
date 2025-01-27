@@ -49,7 +49,7 @@ export default class HomePage {
     this.deleteTrackingButton = page.getByRole('button', { name: 'Remove Tracking!' })
 
     // Footer items
-    this.copyRightNoticeText = page.getByText('© 2024 Steam Sale Notifier');
+    this.copyRightNoticeText = page.getByText('© 2025 Steam Sale Notifier');
     this.discordIcon = page.getByRole('link', { name: 'Discord' });
 
     // Alerts
