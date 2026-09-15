@@ -11,9 +11,9 @@ import { formatSpecial } from "./format-special.js";
 export class SteamService implements OnModuleInit {
   constructor(
     @Inject(PG_POOL) private readonly pool: Pool,
-    private readonly discord: DiscordService,
-    private readonly config: ConfigService,
-    private readonly scheduler: SchedulerRegistry,
+    @Inject(DiscordService) private readonly discord: DiscordService,
+    @Inject(ConfigService) private readonly config: ConfigService,
+    @Inject(SchedulerRegistry) private readonly scheduler: SchedulerRegistry,
   ) {}
 
   onModuleInit() {

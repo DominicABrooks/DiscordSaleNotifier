@@ -7,6 +7,12 @@ export class ValidateWebhookMiddleware implements NestMiddleware {
   use(req: Request, res: Response, next: NextFunction) {
     const { webhook } = req.body;
 
+    if (typeof webhook !== "string") {
+      return res.status(400).json({
+        error: "Input Webhook is not URL",
+      });
+    }
+
     if (!validator.isURL(webhook, { require_protocol: true })) {
       return res.status(400).json({
         error: "Input Webhook is not URL",

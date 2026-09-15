@@ -7,7 +7,7 @@ import { DiscordService } from "../discord/discord.service.js";
 export class WebhooksService {
   constructor(
     @Inject(PG_POOL) private readonly pool: Pool,
-    private readonly discord: DiscordService,
+    @Inject(DiscordService) private readonly discord: DiscordService,
   ) {}
 
   async create(webhook: string): Promise<{ message: string }> {

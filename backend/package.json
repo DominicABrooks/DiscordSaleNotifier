@@ -13,7 +13,8 @@
     "test:server": "cross-env NODE_ENV=test node dist/src/main.js",
     "batch:test": "cross-env NODE_ENV=test STEAM_CRON=off node run-batch.mjs",
     "test:unit": "vitest run",
-    "test:mutation": "stryker run"
+    "test:mutation": "stryker run",
+    "test:fuzz": "cross-env FUZZ_RUNS=10000 STEAM_CRON=off vitest run fuzz --reporter=verbose"
   },
   "author": "Dominic Brooks",
   "license": "ISC",
@@ -38,12 +39,16 @@
   },
   "keywords": [],
   "devDependencies": {
+    "@nestjs/testing": "^12.0.3",
     "@stryker-mutator/core": "^10.0.0",
     "@stryker-mutator/vitest-runner": "^10.0.0",
     "@types/node": "^22.20.2",
     "@types/pg": "^8.11.6",
+    "@types/supertest": "^7.2.1",
     "@types/swagger-ui-express": "^4.1.6",
     "@types/validator": "^13.12.0",
+    "fast-check": "^4.10.0",
+    "supertest": "^7.2.2",
     "typescript": "^5.5.2",
     "vitest": "^3.2.4"
   }

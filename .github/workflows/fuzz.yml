@@ -1,0 +1,58 @@
+name: Extended Fuzz Tests
+
+on:
+  schedule:
+    # Weekly on Thursdays at 06:00 UTC (fuzz runs are slow; not per-push)
+    # Staggered from Stryker (Mondays) to spread CI load.
+    - cron: "0 6 * * 4"
+  workflow_dispatch:
+    inputs:
+      runs:
+        description: "fast-check numRuns per property"
+        required: false
+        default: "10000"
+      seed:
+        description: "fast-check seed (0 = random)"
+        required: false
+        default: "0"
+
+concurrency:
+  group: fuzz-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  fuzz:
+    timeout-minutes: 90
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies (backend)
+        run: npm ci
+
+      - name: Run extended fuzz tests
+        run: mkdir -p reports/fuzz; npx vitest run fuzz --reporter=verbose 2>&1 | tee reports/fuzz/fuzz.log
+        env:
+          FUZZ_RUNS: ${{ inputs.runs || '10000' }}
+          FUZZ_SEED: ${{ inputs.seed || '0' }}
+          STEAM_CRON: 'off'
+
+      - name: Upload fuzz logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: fuzz-logs
+          path: backend/reports/fuzz/
+          retention-days: 30
