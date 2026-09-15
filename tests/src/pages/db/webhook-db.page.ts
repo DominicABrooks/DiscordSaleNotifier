@@ -62,4 +62,18 @@ export default class WebhookDbPage {
         const webhookExists = await this.checkWebhookExists(webhook);
         assert(!webhookExists, `Webhook ${webhook} exists in the database`);
     }
+
+    async ensureWebhookExists(webhook: string): Promise<void> {
+        const exists = await this.checkWebhookExists(webhook);
+        if (!exists) {
+            await pool.query(
+                'INSERT INTO webhooks (webhook_url, created_at) VALUES ($1, NOW())',
+                [webhook]
+            );
+        }
+    }
+
+    async ensureWebhookNotExists(webhook: string): Promise<void> {
+        await pool.query('DELETE FROM webhooks WHERE webhook_url = $1', [webhook]);
+    }
 }

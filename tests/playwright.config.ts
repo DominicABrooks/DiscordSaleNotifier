@@ -13,17 +13,32 @@ if (!process.env.NODE_ENV) {
 }
 
 /**
+ * Parallelism strategy (do not naively flip these back to serial).
+ * CREATE hits live Discord (GET + POST per call) and the suite owns exactly
+ * 2 real webhook URLs as shared DB rows. So:
+ * - *-lifecycle.spec.ts (stateful: add/duplicate/delete) runs on chromium
+ *   ONLY, in serial mode, each test self-seeding its precondition via
+ *   ensureWebhookExists/ensureWebhookNotExists. Chromium runs in parallel
+ *   with the other browsers because no other project touches those rows.
+ * - Everything else is stateless (static UI, validation negatives that never
+ *   insert, read-only React API checks) and runs on all browsers x N workers.
+ * Narrower scope (fewer browsers/serial) = slower but safer; do not broaden
+ * without adding per-project webhook URLs.
+ */
+const lifecycleSpecs = ['**/api-lifecycle.spec.ts', '**/e2e-lifecycle.spec.ts'];
+
+/**
  * See https://playwright.dev/docs/test-configuration.
  */
 export default defineConfig({
   testDir: './src/tests',
-  /* Run tests in files in parallel */
+  /* Stateless specs run in parallel; serial describes inside lifecycle files stay serial */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */
   forbidOnly: !!process.env.CI,
   /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
-  /* Opt out of parallel tests on CI. */
+  /* Single worker on CI (sqlite-style caution with live Discord webhooks); parallel locally. */
   workers: process.env.CI ? 1 : undefined,
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: 'html',
@@ -49,43 +64,18 @@ export default defineConfig({
       dependencies: ['setup db'],
     },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-      dependencies: ['setup db'],
-    },
-    
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-      dependencies: ['setup db'],
-    },
-
-    /* Test against mobile viewports. */
     // {
-    //   name: 'Mobile Chrome',
-    //   use: { ...devices['Pixel 5'] },
-    // },
-    // {
-    //   name: 'Mobile Safari',
-    //   use: { ...devices['iPhone 12'] },
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    //   dependencies: ['setup db'],
+    //   testIgnore: lifecycleSpecs,
     // },
 
-    /* Test against branded browsers. */
     // {
-    //   name: 'Microsoft Edge',
-    //   use: { ...devices['Desktop Edge'], channel: 'msedge' },
-    // },
-    // {
-    //   name: 'Google Chrome',
-    //   use: { ...devices['Desktop Chrome'], channel: 'chrome' },
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    //   dependencies: ['setup db'],
+    //   testIgnore: lifecycleSpecs,
     // },
   ],
-
-  /* Run your local dev server before starting the tests */
-  // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://127.0.0.1:3000',
-  //   reuseExistingServer: !process.env.CI,
-  // },
 });

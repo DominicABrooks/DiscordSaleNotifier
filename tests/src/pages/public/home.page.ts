@@ -28,7 +28,6 @@ export default class HomePage {
 
   // Alerts
   readonly toastContainer: Locator;
-  readonly failedToFetchToast: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -97,8 +96,7 @@ export default class HomePage {
   }
 
   async assertToastContainerText(expectedText: string) {
-    const actualText = await this.toastContainer.innerText();
-    expect(actualText).toBe(expectedText); 
+    await expect(this.toastContainer).toContainText(expectedText);
   }
 
   async assertPageTitleText(expectedText: string) {

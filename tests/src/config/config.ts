@@ -48,6 +48,6 @@ export default {
     DB_PORT:  process.env.DB_PORT ?? "",
     DB_NAME:  process.env.DB_NAME ?? "",
     DISCORD_WEBHOOK_URL: process.env.DISCORD_WEBHOOK_URL ?? "",
-    DISCORD_WEBHOOK_URL_FOR_API_TESTS: process.env.DISCORD_WEBHOOK_URL ?? "",
+    DISCORD_WEBHOOK_URL_FOR_API_TESTS: process.env.DISCORD_WEBHOOK_URL_FOR_API_TESTS ?? "",
     API_URL: process.env.API_URL ?? "",
 };

@@ -8,7 +8,9 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "setup:dev": "cross-env NODE_ENV=development node dist/db/migrations/setup_db.js",
-    "dev": "cross-env NODE_ENV=development node dist/src/server.js"
+    "setup:test": "cross-env NODE_ENV=test node dist/db/migrations/setup_db.js",
+    "dev": "cross-env NODE_ENV=development node dist/src/server.js",
+    "test:server": "cross-env NODE_ENV=test node dist/src/server.js"
   },
   "author": "Dominic Brooks",
   "license": "ISC",

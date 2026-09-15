@@ -38,7 +38,7 @@ jobs:
       DB_HOST: localhost
       DISCORD_WEBHOOK_URL_FOR_API_TESTS: ${{ secrets.WEBHOOK_URL_TEST }}
       DISCORD_WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-      API_URL: http://localhost:1337
+      API_URL: http://localhost:8080
 
     steps:
       - name: Checkout code
@@ -60,10 +60,17 @@ jobs:
         run: npm ci
         working-directory: tests
 
+      - name: Typecheck tests
+        run: npm run typecheck
+        working-directory: tests
+
       - name: Build backend
         run: npm run build
         working-directory: backend
 
+      - name: Build frontend
+        run: npm run build
+        working-directory: frontend
       - name: Setup backend
         run: npm run setup:dev
         working-directory: backend
