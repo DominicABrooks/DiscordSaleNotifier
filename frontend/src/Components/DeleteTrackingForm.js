@@ -2,10 +2,12 @@ import React from 'react';
 import TrackingForm from './TrackingForm';
 import { toast } from 'react-toastify';
 
+const API_BASE_URL = process.env.REACT_APP_API_URL || '';
+
 function DeleteTrackingForm() {
   const deleteWebhook = async (webhookUrl) => {
     try {
-      const response = await fetch('http://localhost:1337/api/webhook/delete', {
+      const response = await fetch(`${API_BASE_URL}/api/webhook/delete`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json'

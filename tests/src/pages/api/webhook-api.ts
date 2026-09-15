@@ -2,7 +2,7 @@ import { APIRequestContext, APIResponse, request } from '@playwright/test';
 import config from '../../config/config';
 
 export default class WebhookApiPage {
-    private apiRequestContext: APIRequestContext;
+    private apiRequestContext!: APIRequestContext;
 
     /**
      * Initializes the API request context with the specified base URL.

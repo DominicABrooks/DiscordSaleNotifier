@@ -24,3 +24,34 @@
 - `npm run dev`: Start the backend development server.
 
 This setup should get your project running with both frontend and backend components integrated with PostgreSQL.
+
+# Testing
+
+Tests run against a dedicated `discord_sale_notifier_test` database — never the dev database.
+
+1. `npm run setup:test` in `backend/` (first time, or anytime — creates the DB and ensures tables; safe to re-run).
+2. `npm run test:server` in `backend/` (API on `:8080`, backed by the test DB).
+3. `npm run start` in `frontend/` (`:3000`, proxies `/api` to `:8080`).
+4. `$env:NODE_ENV='test'; npx playwright test --project=chromium` in `tests/`.
+
+Run `npm run typecheck` in `tests/` to catch type errors without running browsers (also runs in CI).
+
+Test env files (`backend/.env.test`, `tests/src/config/.env.test`) are gitignored locals; copy the `.development` variants to create them. The `setup db` Playwright project truncates `webhooks` before browser tests, so always run whole files/projects — never repeat a lone `add` test, or the leftover row makes the rerun fail with "already exists".
+
+# Running with Docker
+
+One container per service (3 total), orchestrated with Docker Compose:
+
+- `db` — PostgreSQL 16 (data persisted in the `pgdata` volume, tables created on first start)
+- `backend` — Express API on `http://localhost:8080`
+- `frontend` — React build served by nginx on `http://localhost` (`/api/*` is proxied to the backend, so no CORS setup needed)
+
+1. Copy `.env.example` to `.env` and adjust credentials if needed (defaults work out of the box).
+2. `docker compose up --build`
+3. Open `http://localhost`. API docs at `http://localhost:8080/api-docs`.
+
+To reset the database (deletes all webhooks/sales): `docker compose down -v`
+
+> Note: the local `postgresql-x64-17` Windows service holds host port 5432, so `.env` maps the DB to `5433` on the host. The backend still reaches it internally on `5432`. To use the standard host port, run `net stop postgresql-x64-17` from an elevated prompt and set `DB_PORT=5432` in `.env`.
+
+> E2E tests vs Docker: the Playwright suite uses the local test stack (`npm run test:server` + `npm run start`, test database). `docker compose up` runs its own backend on the same `:8080` with its own database — so stop the stack (`docker compose stop`) before running e2e, or API writes and DB assertions will land in different databases and tests will fail.

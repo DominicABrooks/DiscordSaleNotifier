@@ -7,6 +7,8 @@ import swaggerJsdoc from 'swagger-jsdoc';
 
 const app = express();
 
+const PORT = Number(process.env.PORT) || 8080;
+
 // Swagger setup
 const swaggerOptions = {
   definition: {
@@ -17,7 +19,7 @@ const swaggerOptions = {
     },
     servers: [
       {
-        url: 'http://localhost:1337'
+        url: `http://localhost:${PORT}`
       },
     ],
   },
@@ -66,11 +68,11 @@ app.use('/api/webhook', webhookRouter);
 steamworksCron('* * * * *');
 
 /**
- * Start the Express server and listen for connections on port 1337.
+ * Start the Express server and listen for connections on the configured port.
  * This is the main entry point for the application.
  * 
  * @see https://expressjs.com/en/starter/hello-world.html
  */
-app.listen(1337, () => {
-  console.log('Server is running on http://localhost:1337');
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
