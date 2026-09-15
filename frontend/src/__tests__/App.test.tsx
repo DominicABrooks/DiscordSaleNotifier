@@ -34,7 +34,7 @@ describe('App', () => {
     expect(screen.getByRole('tab', { name: 'Delete Tracking' })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /start tracking!/i })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: /remove tracking!/i })).toBeInTheDocument();
-    expect(screen.getByText(/2025 Steam Sale Notifier/)).toBeInTheDocument();
+    expect(screen.getByText(/2026 Steam Sale Notifier/)).toBeInTheDocument();
     expect(document.querySelector('.Toastify')).toBeInTheDocument();
   });
 
