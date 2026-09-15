@@ -29,6 +29,8 @@ This setup should get your project running with both frontend and backend compon
 
 Tests run against a dedicated `discord_sale_notifier_test` database — never the dev database.
 
+Set STEAM_CRON=off to disable the Steam polling cron, or to a cron expression to change its schedule (default every minute).
+
 1. `npm run setup:test` in `backend/` (first time, or anytime — creates the DB and ensures tables; safe to re-run).
 2. `npm run test:server` in `backend/` (API on `:8080`, backed by the test DB).
 3. `npm run start` in `frontend/` (`:3000`, proxies `/api` to `:8080`).
@@ -43,7 +45,7 @@ Test env files (`backend/.env.test`, `tests/src/config/.env.test`) are gitignore
 One container per service (3 total), orchestrated with Docker Compose:
 
 - `db` — PostgreSQL 16 (data persisted in the `pgdata` volume, tables created on first start)
-- `backend` — Express API on `http://localhost:8080`
+- `backend` — NestJS API on `http://localhost:8080`
 - `frontend` — React build served by nginx on `http://localhost` (`/api/*` is proxied to the backend, so no CORS setup needed)
 
 1. Copy `.env.example` to `.env` and adjust credentials if needed (defaults work out of the box).
