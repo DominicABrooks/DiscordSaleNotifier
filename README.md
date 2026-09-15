@@ -36,6 +36,10 @@ Set STEAM_CRON=off to disable the Steam polling cron, or to a cron expression to
 3. `npm run start` in `frontend/` (`:3000`, proxies `/api` to `:8080`).
 4. `$env:NODE_ENV='test'; npx playwright test --project=chromium` in `tests/`.
 
+Run `npm run test:ci` in `frontend/` for the React unit and integration tests (Jest via react-scripts, also runs in CI).
+
+Run `npm run test:mutation` in `frontend/` for StrykerJS mutation testing (also runs weekly in CI).
+
 Run `npm run typecheck` in `tests/` to catch type errors without running browsers (also runs in CI).
 
 Test env files (`backend/.env.test`, `tests/src/config/.env.test`) are gitignored locals; copy the `.development` variants to create them. The `setup db` Playwright project truncates `webhooks` before browser tests, so always run whole files/projects — never repeat a lone `add` test, or the leftover row makes the rerun fail with "already exists".

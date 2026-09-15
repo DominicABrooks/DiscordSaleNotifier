@@ -24,4 +24,7 @@ yarn-error.log*
 *-test.err.log
 
 backend/reports/
+frontend/reports/
 backend/.stryker-tmp/
+frontend/stryker-tmp/
+frontend/.stryker-tmp/

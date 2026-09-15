@@ -2,12 +2,12 @@ import React from 'react';
 import TrackingForm from './TrackingForm';
 import { toast } from 'react-toastify';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || '';
+const getApiBaseUrl = (): string => process.env.REACT_APP_API_URL || '';
 
 const AddTrackingForm: React.FC = () => {
   const createWebhook = async (webhookUrl: string): Promise<void> => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/webhook/create`, {
+      const response = await fetch(`${getApiBaseUrl()}/api/webhook/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

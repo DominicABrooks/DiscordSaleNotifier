@@ -45,3 +45,38 @@ jobs:
           name: mutation-report
           path: backend/reports/mutation/
           retention-days: 30
+
+  mutation-frontend:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies (frontend)
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:ci
+
+      - name: Run Stryker mutation tests
+        run: npm run test:mutation
+
+      - name: Upload mutation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutation-report-frontend
+          path: frontend/reports/mutation/
+          retention-days: 30

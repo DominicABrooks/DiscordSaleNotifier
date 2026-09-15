@@ -75,6 +75,10 @@ jobs:
       - name: Build frontend
         run: npm run build
         working-directory: frontend
+      - name: Run frontend unit tests
+        run: npm run test:ci
+        working-directory: frontend
+
       - name: Setup backend
         run: npm run setup:dev
         working-directory: backend
