@@ -6,7 +6,12 @@ export default defineConfig({
   retries: 0,
   workers: 1,
   reporter: "html",
+  snapshotPathTemplate: "{testDir}/{testFileName}-snapshots/{arg}{ext}",
+  expect: {
+    toHaveScreenshot: { maxDiffPixels: 20, animations: "disabled" },
+  },
   use: {
+    viewport: { width: 1280, height: 800 },
     trace: "on-first-retry"
   },
   webServer: {

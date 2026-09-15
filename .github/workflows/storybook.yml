@@ -18,7 +18,8 @@ permissions:
 jobs:
   visual:
     timeout-minutes: 30
-    runs-on: ubuntu-latest
+    # Baselines are committed from Windows, so this stays on Windows for identical font rendering.
+    runs-on: windows-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -45,7 +46,7 @@ jobs:
         working-directory: tests
 
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps chromium
+        run: npx playwright install chromium
         working-directory: tests
 
       - name: Run Storybook visual tests
@@ -60,12 +61,12 @@ jobs:
           path: frontend/storybook-static/
           retention-days: 30
 
-      - name: Upload visual screenshots
-        if: ${{ !cancelled() }}
+      - name: Upload visual diffs
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          name: storybook-screenshots
-          path: tests/storybook-screenshots/
+          name: storybook-diffs
+          path: tests/test-results/
           retention-days: 30
 
       - name: Upload visual report

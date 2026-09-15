@@ -15,8 +15,12 @@ const STORIES = [
 
 for (const story of STORIES) {
   test("storybook visual " + story.name, async function ({ page }) {
-    await page.goto(BASE_URL + "/iframe.html?id=" + story.id, { waitUntil: "networkidle" });
-    await expect(page.locator("#storybook-root")).toBeVisible();
-    await page.screenshot({ path: "storybook-screenshots/" + story.id + ".png" });
+    await page.goto(BASE_URL + "/iframe.html?id=" + story.id, { waitUntil: "load" });
+    const root = page.locator("#storybook-root");
+    await expect(root).toBeVisible();
+    await expect(root).toHaveScreenshot(story.id + ".png", {
+      animations: "disabled",
+      caret: "hide"
+    });
   });
 }
