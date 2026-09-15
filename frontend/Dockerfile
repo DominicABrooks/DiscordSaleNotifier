@@ -4,6 +4,7 @@ ARG REACT_APP_API_URL=
 ENV REACT_APP_API_URL=$REACT_APP_API_URL
 COPY package*.json ./
 RUN npm ci
+COPY tsconfig.json ./
 COPY public ./public
 COPY src ./src
 RUN npm run build

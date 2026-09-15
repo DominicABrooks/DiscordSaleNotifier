@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || '';
 
-function DeleteTrackingForm() {
-  const deleteWebhook = async (webhookUrl) => {
+const DeleteTrackingForm: React.FC = () => {
+  const deleteWebhook = async (webhookUrl: string): Promise<void> => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/webhook/delete`, {
         method: 'DELETE',
@@ -16,7 +16,7 @@ function DeleteTrackingForm() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = (await response.json()) as { error?: string };
         throw new Error(errorData.error ?? 'Failed to delete webhook');
       }
 
@@ -26,13 +26,14 @@ function DeleteTrackingForm() {
       });
     } catch (error) {
       // Simulating error toast notification
-      toast.error(error.message ?? 'Failed to delete webhook', {
+      const message = error instanceof Error ? error.message : 'Failed to delete webhook';
+      toast.error(message, {
         position: 'top-right'
       });
     }
   };
 
   return <TrackingForm formType="delete" onSubmitForm={deleteWebhook} />;
-}
+};
 
 export default DeleteTrackingForm;

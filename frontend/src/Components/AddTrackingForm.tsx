@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 
 const API_BASE_URL = process.env.REACT_APP_API_URL || '';
 
-function AddTrackingForm() {
-  const createWebhook = async (webhookUrl) => {
+const AddTrackingForm: React.FC = () => {
+  const createWebhook = async (webhookUrl: string): Promise<void> => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/webhook/create`, {
         method: 'POST',
@@ -16,7 +16,7 @@ function AddTrackingForm() {
       });
 
       if (!response.ok) {
-        const errorData = await response.json();
+        const errorData = (await response.json()) as { error?: string };
         throw new Error(errorData.error ?? 'Failed to create webhook');
       }
 
@@ -26,13 +26,14 @@ function AddTrackingForm() {
       });
     } catch (error) {
       // Simulating error toast notification
-      toast.error(error.message ?? 'Failed to create webhook', {
+      const message = error instanceof Error ? error.message : 'Failed to create webhook';
+      toast.error(message, {
         position: 'top-right'
       });
     }
   };
 
   return <TrackingForm formType="add" onSubmitForm={createWebhook} />;
-}
+};
 
 export default AddTrackingForm;

@@ -1,0 +1,6 @@
+# Auto-detect text files and normalize to LF on commit.
+* text=auto
+
+# Shell scripts must keep LF endings: a CRLF shebang breaks execution
+# inside Linux containers (backend entrypoint).
+*.sh text eol=lf

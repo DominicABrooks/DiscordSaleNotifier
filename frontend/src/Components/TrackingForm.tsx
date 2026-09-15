@@ -3,12 +3,19 @@ import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import { toast } from 'react-toastify'; // Import only the toast function
 
-const TrackingForm = ({ formType, onSubmitForm }) => {
-  const [webhookUrl, setWebhookUrl] = useState('');
-  const [isValidUrl, setIsValidUrl] = useState(true); // State to manage URL validity
+export type TrackingFormType = 'add' | 'delete';
+
+interface TrackingFormProps {
+  formType: TrackingFormType;
+  onSubmitForm: (webhookUrl: string) => Promise<void>;
+}
+
+const TrackingForm: React.FC<TrackingFormProps> = ({ formType, onSubmitForm }) => {
+  const [webhookUrl, setWebhookUrl] = useState<string>('');
+  const [isValidUrl, setIsValidUrl] = useState<boolean>(true); // State to manage URL validity
 
   // Function to check if the given URL is valid according to the specified pattern
-  const checkIfValidDiscordWebhookUrl = (url) => {
+  const checkIfValidDiscordWebhookUrl = (url: string): boolean => {
     // Validate URL format (simple check for https://discord.com/api/webhooks/... format)
     const isValid = /^https:\/\/discord(app)?\.com\/api\/webhooks\/\d{17,19}\/\S+$/.test(url);
     setIsValidUrl(isValid);
@@ -16,39 +23,40 @@ const TrackingForm = ({ formType, onSubmitForm }) => {
     return isValid;
   };
 
-  const handleSubmit = async () => {
-    const isValidUrl = checkIfValidDiscordWebhookUrl(webhookUrl);
+  const handleSubmit = async (): Promise<void> => {
+    const isValid = checkIfValidDiscordWebhookUrl(webhookUrl);
 
     // Validate URL format
-    if (!isValidUrl) {
+    if (!isValid) {
       console.log('Invalid URL');
       toast.error('Invalid Webhook', {
         position: 'top-right'
       });
       return; // Prevent submission if URL is invalid
     }
-    
+
     try {
-        const response = await fetch(webhookUrl); // Sending GET request to the webhook URL
-  
-        if (!response.ok) {
-          toast.error('Failed to fetch webhook URL', {
-            position: 'top-right'
-          });
-          return; // Prevent submission if GET request fails
-        }
+      const response = await fetch(webhookUrl); // Sending GET request to the webhook URL
 
-        await onSubmitForm(webhookUrl);
-    } catch (error) {
-        console.error('Error fetching webhook URL:', error.message);
-
+      if (!response.ok) {
         toast.error('Failed to fetch webhook URL', {
-            position: 'top-right'
+          position: 'top-right'
         });
+        return; // Prevent submission if GET request fails
+      }
+
+      await onSubmitForm(webhookUrl);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : 'Failed to fetch webhook URL';
+      console.error('Error fetching webhook URL:', message);
+
+      toast.error('Failed to fetch webhook URL', {
+        position: 'top-right'
+      });
     }
   };
 
-  const handleUrlChange = (event) => {
+  const handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const url = event.target.value;
     setWebhookUrl(url);
 

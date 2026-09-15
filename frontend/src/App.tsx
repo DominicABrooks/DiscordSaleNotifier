@@ -4,26 +4,26 @@ import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Tab from 'react-bootstrap/Tab';
 import Tabs from 'react-bootstrap/Tabs';
-import Footer from './Components/Footer'; 
+import Footer from './Components/Footer';
 import Header from './Components/Header';
-import AddTrackingForm from './Components/AddTrackingForm'; 
-import DeleteTrackingForm from './Components/DeleteTrackingForm'; 
+import AddTrackingForm from './Components/AddTrackingForm';
+import DeleteTrackingForm from './Components/DeleteTrackingForm';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-function App() {
+const App: React.FC = () => {
   return (
     <Container className="mt-3">
       <Header />
       <CardTabs />
       <Footer />
-      <ToastContainer position="top-right" autoClose={5000}/>
+      <ToastContainer position="top-right" autoClose={5000} />
     </Container>
   );
-}
+};
 
 // Card Tabs Component
-function CardTabs() {
+const CardTabs: React.FC = () => {
   return (
     <div className="mt-3 card text-bg-light shadow">
       <div className="card-header">
@@ -38,6 +38,6 @@ function CardTabs() {
       </div>
     </div>
   );
-}
+};
 
 export default App;
