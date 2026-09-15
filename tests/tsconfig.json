@@ -14,6 +14,8 @@
   },
   "include": [
     "src/**/*",
-    "playwright.config.ts"
+    "playwright.config.ts",
+    "visual/**/*",
+    "storybook-visual.config.ts"
   ]
 }

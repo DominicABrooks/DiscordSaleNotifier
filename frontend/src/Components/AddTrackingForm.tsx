@@ -1,37 +1,28 @@
-import React from 'react';
-import TrackingForm from './TrackingForm';
-import { toast } from 'react-toastify';
-
-const getApiBaseUrl = (): string => process.env.REACT_APP_API_URL || '';
+import React from "react";
+import TrackingForm from "./TrackingForm";
+import { toast } from "react-toastify";
+import { submitWebhookRequest } from "../utils/webhookApi";
 
 const AddTrackingForm: React.FC = () => {
-  const createWebhook = async (webhookUrl: string): Promise<void> => {
+  async function createWebhook(webhookUrl: string) {
     try {
-      const response = await fetch(`${getApiBaseUrl()}/api/webhook/create`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ webhook: webhookUrl })
+      const message = await submitWebhookRequest({
+        endpoint: "create",
+        method: "POST",
+        webhookUrl,
+        successMessage: "Webhook added successfully!",
+        failureMessage: "Failed to create webhook"
       });
-
-      if (!response.ok) {
-        const errorData = (await response.json()) as { error?: string };
-        throw new Error(errorData.error ?? 'Failed to create webhook');
-      }
-
-      // Simulating success toast notification
-      toast.success('Webhook added successfully!', {
-        position: 'top-right'
+      toast.success(message, {
+        position: "top-right"
       });
     } catch (error) {
-      // Simulating error toast notification
-      const message = error instanceof Error ? error.message : 'Failed to create webhook';
+      const message = error instanceof Error ? error.message : "Failed to create webhook";
       toast.error(message, {
-        position: 'top-right'
+        position: "top-right"
       });
     }
-  };
+  }
 
   return <TrackingForm formType="add" onSubmitForm={createWebhook} />;
 };

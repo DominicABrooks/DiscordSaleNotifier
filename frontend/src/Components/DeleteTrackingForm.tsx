@@ -1,37 +1,28 @@
-import React from 'react';
-import TrackingForm from './TrackingForm';
-import { toast } from 'react-toastify';
-
-const getApiBaseUrl = (): string => process.env.REACT_APP_API_URL || '';
+import React from "react";
+import TrackingForm from "./TrackingForm";
+import { toast } from "react-toastify";
+import { submitWebhookRequest } from "../utils/webhookApi";
 
 const DeleteTrackingForm: React.FC = () => {
-  const deleteWebhook = async (webhookUrl: string): Promise<void> => {
+  async function deleteWebhook(webhookUrl: string) {
     try {
-      const response = await fetch(`${getApiBaseUrl()}/api/webhook/delete`, {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ webhook: webhookUrl })
+      const message = await submitWebhookRequest({
+        endpoint: "delete",
+        method: "DELETE",
+        webhookUrl,
+        successMessage: "Webhook deleted successfully!",
+        failureMessage: "Failed to delete webhook"
       });
-
-      if (!response.ok) {
-        const errorData = (await response.json()) as { error?: string };
-        throw new Error(errorData.error ?? 'Failed to delete webhook');
-      }
-
-      // Simulating success toast notification
-      toast.success('Webhook deleted successfully!', {
-        position: 'top-right'
+      toast.success(message, {
+        position: "top-right"
       });
     } catch (error) {
-      // Simulating error toast notification
-      const message = error instanceof Error ? error.message : 'Failed to delete webhook';
+      const message = error instanceof Error ? error.message : "Failed to delete webhook";
       toast.error(message, {
-        position: 'top-right'
+        position: "top-right"
       });
     }
-  };
+  }
 
   return <TrackingForm formType="delete" onSubmitForm={deleteWebhook} />;
 };

@@ -1,4 +1,4 @@
-# Discord Steam Sale Notifier [![Playwright Tests](https://github.com/DominicABrooks/DiscordSaleNotifier/actions/workflows/playwright.yml/badge.svg?branch=master)](https://github.com/DominicABrooks/DiscordSaleNotifier/actions/workflows/playwright.yml) [![SAST](https://github.com/DominicABrooks/DiscordSaleNotifier/actions/workflows/sast.yml/badge.svg?branch=master)](https://github.com/DominicABrooks/DiscordSaleNotifier/actions/workflows/sast.yml)
+# Discord Steam Sale Notifier [![Playwright Tests](https://github.com/DominicABrooks/DiscordSaleNotifier/actions/workflows/playwright.yml/badge.svg?branch=master)](https://github.com/DominicABrooks/DiscordSaleNotifier/actions/workflows/playwright.yml) [![SAST](https://github.com/DominicABrooks/DiscordSaleNotifier/actions/workflows/sast.yml/badge.svg?branch=master)](https://github.com/DominicABrooks/DiscordSaleNotifier/actions/workflows/sast.yml) [![Storybook](https://github.com/DominicABrooks/DiscordSaleNotifier/actions/workflows/storybook.yml/badge.svg?branch=master)](https://github.com/DominicABrooks/DiscordSaleNotifier/actions/workflows/storybook.yml)
 > Full-stack Typescript application where users can input their webhooks to receive live notifications about new Steam sales.
 
 ![Untitled](https://github.com/user-attachments/assets/0999b983-8903-4971-b7d1-323c05c55599)
@@ -61,3 +61,23 @@ To reset the database (deletes all webhooks/sales): `docker compose down -v`
 > Note: the local `postgresql-x64-17` Windows service holds host port 5432, so `.env` maps the DB to `5433` on the host. The backend still reaches it internally on `5432`. To use the standard host port, run `net stop postgresql-x64-17` from an elevated prompt and set `DB_PORT=5432` in `.env`.
 
 > E2E tests vs Docker: the Playwright suite uses the local test stack (`npm run test:server` + `npm run start`, test database). `docker compose up` runs its own backend on the same `:8080` with its own database — so stop the stack (`docker compose stop`) before running e2e, or API writes and DB assertions will land in different databases and tests will fail.
+
+# Storybook (visual testing)
+
+Storybook renders each UI component in isolation so visual changes can be reviewed without starting the full stack.
+
+Run the component workshop locally (from frontend/):
+
+    npm run storybook
+
+Then open http://localhost:6006.
+
+Build the static bundle (also runs in CI):
+
+    npm run build-storybook
+
+Run the visual smoke tests (from tests/, needs the static bundle built first):
+
+    npx playwright test --config storybook-visual.config.ts
+
+The visual suite loads every story in isolation, checks that it renders, and saves one screenshot per story to tests/storybook-screenshots/ (gitignored). In CI the static bundle, the screenshots, and the HTML report are uploaded as artifacts for review.

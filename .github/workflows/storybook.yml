@@ -1,0 +1,77 @@
+name: Storybook
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+concurrency:
+  group: storybook-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  actions: write  # upload-artifact steps
+
+jobs:
+  visual:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+
+      - name: Install dependencies (frontend)
+        run: npm ci
+        working-directory: frontend
+
+      - name: Build Storybook
+        run: npm run build-storybook
+        working-directory: frontend
+        env:
+          STORYBOOK_DISABLE_TELEMETRY: 1
+
+      - name: Install dependencies (tests)
+        run: npm ci
+        working-directory: tests
+
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps chromium
+        working-directory: tests
+
+      - name: Run Storybook visual tests
+        run: npx playwright test --config storybook-visual.config.ts
+        working-directory: tests
+
+      - name: Upload Storybook build
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-static
+          path: frontend/storybook-static/
+          retention-days: 30
+
+      - name: Upload visual screenshots
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-screenshots
+          path: tests/storybook-screenshots/
+          retention-days: 30
+
+      - name: Upload visual report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: storybook-report
+          path: tests/playwright-report/
+          retention-days: 30
