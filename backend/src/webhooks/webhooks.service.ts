@@ -1,12 +1,14 @@
 import { HttpException, Inject, Injectable } from "@nestjs/common";
-import type { Pool } from "pg";
-import { PG_POOL } from "../db/db.module.js";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { Webhook } from "../db/entities/webhook.entity.js";
 import { DiscordService } from "../discord/discord.service.js";
 
 @Injectable()
 export class WebhooksService {
   constructor(
-    @Inject(PG_POOL) private readonly pool: Pool,
+    @InjectRepository(Webhook)
+    private readonly webhooks: Repository<Webhook>,
     @Inject(DiscordService) private readonly discord: DiscordService,
   ) {}
 
@@ -19,18 +21,12 @@ export class WebhooksService {
     }
 
     try {
-      const { rows } = await this.pool.query(
-        "SELECT COUNT(*) FROM webhooks WHERE webhook_url = $1",
-        [webhook],
-      );
-      if (parseInt(rows[0].count) > 0) {
+      const existing = await this.webhooks.findOneBy({ webhookUrl: webhook });
+      if (existing) {
         throw new HttpException({ error: "Webhook already exists" }, 400);
       }
 
-      await this.pool.query(
-        "INSERT INTO webhooks (webhook_url, created_at) VALUES ($1, NOW())",
-        [webhook],
-      );
+      await this.webhooks.save(this.webhooks.create({ webhookUrl: webhook }));
 
       await this.discord.sendToDiscordWebhook(webhook, {
         content: "Tracking added successfully!",
@@ -46,12 +42,9 @@ export class WebhooksService {
 
   async remove(webhook: string): Promise<{ message: string }> {
     try {
-      const result = await this.pool.query(
-        "DELETE FROM webhooks WHERE webhook_url = $1",
-        [webhook],
-      );
+      const result = await this.webhooks.delete({ webhookUrl: webhook });
 
-      if (result.rowCount && result.rowCount > 0) {
+      if (result.affected && result.affected > 0) {
         return { message: "Webhook deleted successfully" };
       }
       throw new HttpException({ error: "Webhook not found" }, 404);

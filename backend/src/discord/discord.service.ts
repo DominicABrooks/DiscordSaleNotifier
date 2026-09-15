@@ -1,7 +1,8 @@
-import { Inject, Injectable } from "@nestjs/common";
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
 import { WebhookClient } from "discord.js";
-import type { Pool } from "pg";
-import { PG_POOL } from "../db/db.module.js";
+import { Repository } from "typeorm";
+import { Webhook } from "../db/entities/webhook.entity.js";
 
 const DISCORD_WEBHOOK_PATH = /^\/api\/webhooks\/\d{17,19}\/\S+$/;
 
@@ -23,7 +24,10 @@ function assertDiscordWebhookUrl(url: string): void {
 
 @Injectable()
 export class DiscordService {
-  constructor(@Inject(PG_POOL) private readonly pool: Pool) {}
+  constructor(
+    @InjectRepository(Webhook)
+    private readonly webhooks: Repository<Webhook>,
+  ) {}
 
   async getFromWebhook(url: string): Promise<Response> {
     try {
@@ -60,8 +64,8 @@ export class DiscordService {
 
   async sendToDiscordWebhooksInDb(payload: any): Promise<void> {
     try {
-      const queryResult = await this.pool.query("SELECT webhook_url FROM webhooks");
-      const hookUrls = queryResult.rows.map((row: any) => row.webhook_url);
+      const rows = await this.webhooks.find({ select: { webhookUrl: true } });
+      const hookUrls = rows.map((row) => row.webhookUrl);
       await this.sendToDiscordWebhookBulk(hookUrls, payload);
     } catch (err) {
       console.error("Error sending messages to Discord webhooks from DB:", err);

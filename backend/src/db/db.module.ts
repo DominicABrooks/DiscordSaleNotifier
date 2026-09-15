@@ -1,29 +1,25 @@
 import { Global, Module } from "@nestjs/common";
-import pg from "pg";
-
-export const PG_POOL = "PG_POOL";
-
-const { Pool } = pg;
+import { ConfigService } from "@nestjs/config";
+import { TypeOrmModule } from "@nestjs/typeorm";
+import { Sale } from "./entities/sale.entity.js";
+import { Webhook } from "./entities/webhook.entity.js";
 
 @Global()
 @Module({
-  providers: [
-    {
-      provide: PG_POOL,
-      useFactory: () => {
-        return new Pool({
-          host: process.env.DB_HOST,
-          user: process.env.DB_USER,
-          password: process.env.DB_PASS,
-          port: Number(process.env.DB_PORT),
-          database: process.env.DB_NAME,
-          max: 20,
-          idleTimeoutMillis: 30000,
-          connectionTimeoutMillis: 2000,
-        });
-      },
-    },
+  imports: [
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: "postgres",
+        host: config.get<string>("DB_HOST", "localhost"),
+        port: Number(config.get<string>("DB_PORT", "5432")),
+        username: config.get<string>("DB_USER", "postgres"),
+        password: config.get<string>("DB_PASS", "postgres"),
+        database: config.get<string>("DB_NAME", "discord_sale_notifier"),
+        entities: [Webhook, Sale],
+        synchronize: true,
+      }),
+    }),
   ],
-  exports: [PG_POOL],
 })
 export class DbModule {}

@@ -1,16 +1,18 @@
 import { Inject, Injectable, OnModuleInit } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { SchedulerRegistry } from "@nestjs/schedule";
+import { InjectRepository } from "@nestjs/typeorm";
 import { CronJob } from "cron";
-import type { Pool } from "pg";
-import { PG_POOL } from "../db/db.module.js";
+import { LessThan, Repository } from "typeorm";
+import { Sale } from "../db/entities/sale.entity.js";
 import { DiscordService } from "../discord/discord.service.js";
 import { formatSpecial } from "./format-special.js";
 
 @Injectable()
 export class SteamService implements OnModuleInit {
   constructor(
-    @Inject(PG_POOL) private readonly pool: Pool,
+    @InjectRepository(Sale)
+    private readonly sales: Repository<Sale>,
     @Inject(DiscordService) private readonly discord: DiscordService,
     @Inject(ConfigService) private readonly config: ConfigService,
     @Inject(SchedulerRegistry) private readonly scheduler: SchedulerRegistry,
@@ -31,12 +33,12 @@ export class SteamService implements OnModuleInit {
   async checkSteamSpecials(): Promise<void> {
     console.log("Running cron job...");
     try {
-      await this.pool.query("DELETE FROM sales WHERE expiration_date < NOW()");
+      await this.sales.delete({ expirationDate: LessThan(new Date()) });
 
       let existingSales: string[];
       try {
-        const result = await this.pool.query("SELECT game_id FROM sales");
-        existingSales = result.rows.map((row: any) => row.game_id);
+        const rows = await this.sales.find({ select: { gameId: true } });
+        existingSales = rows.map((row) => row.gameId);
       } catch (error) {
         console.error("Error retrieving game IDs from sales table:", error);
         throw error;
@@ -46,12 +48,21 @@ export class SteamService implements OnModuleInit {
       for (const special of steamData) {
         const specialId = special.id.toString();
         if (!existingSales.includes(specialId)) {
-          const expirationTimestamp = new Date(special.discount_expiration * 1000).toISOString();
-          await this.pool.query(
-            "INSERT INTO sales (game_id, expiration_date) VALUES ($1, $2)",
-            [special.id, expirationTimestamp],
-          );
-          console.log(`Added sale to database: ID ${special.id}, Expiration ${expirationTimestamp}`);
+          const expirationTimestamp = new Date(special.discount_expiration * 1000);
+          try {
+            await this.sales.save(
+              this.sales.create({
+                gameId: specialId,
+                expirationDate: expirationTimestamp,
+              }),
+            );
+          } catch (error) {
+            if ((error as any)?.code === "23505") {
+              continue;
+            }
+            throw error;
+          }
+          console.log(`Added sale to database: ID ${special.id}, Expiration ${expirationTimestamp.toISOString()}`);
           await this.discord.sendToDiscordWebhooksInDb(formatSpecial(special));
         }
       }

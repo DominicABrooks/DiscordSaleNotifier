@@ -1,5 +1,6 @@
 import { INestApplication, ValidationPipe } from "@nestjs/common";
 import { Test } from "@nestjs/testing";
+import { getRepositoryToken } from "@nestjs/typeorm";
 import * as fc from "fast-check";
 import "reflect-metadata";
 
@@ -7,9 +8,11 @@ const FUZZ_RUNS = Number(process.env.FUZZ_RUNS ?? 250);
 const FUZZ_SEED = Number(process.env.FUZZ_SEED ?? 0);
 const fcOpts = { numRuns: FUZZ_RUNS, ...(FUZZ_SEED ? { seed: FUZZ_SEED } : {}) };
 import request from "supertest";
+import { DataSource } from "typeorm";
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { AppModule } from "../app.module.js";
-import { PG_POOL } from "../db/db.module.js";
+import { Sale } from "../db/entities/sale.entity.js";
+import { Webhook } from "../db/entities/webhook.entity.js";
 import { DiscordService } from "../discord/discord.service.js";
 
 process.env.STEAM_CRON = "off";
@@ -23,14 +26,21 @@ const webhookArb = fc.oneof(
 const bodyArb = fc.record({ webhook: webhookArb }, { requiredKeys: [] });
 
 let app: INestApplication;
-let query: ReturnType<typeof vi.fn>;
 
 beforeAll(async () => {
-  query = vi.fn(async (sql: string) => {
-    if (sql.startsWith("SELECT COUNT")) return { rows: [{ count: "0" }] };
-    if (sql.startsWith("DELETE")) return { rowCount: 0 };
-    return {};
-  });
+  const webhooksRepo = {
+    create: (dto: any) => dto,
+    findOneBy: vi.fn(async () => null),
+    save: vi.fn(async () => ({})),
+    delete: vi.fn(async () => ({ affected: 0 })),
+    find: vi.fn(async () => []),
+  };
+  const salesRepo = {
+    create: (dto: any) => dto,
+    find: vi.fn(async () => []),
+    save: vi.fn(async () => ({})),
+    delete: vi.fn(async () => ({ affected: 0 })),
+  };
   const discord = {
     getFromWebhook: vi.fn(async () => ({})),
     sendToDiscordWebhook: vi.fn(async () => undefined),
@@ -39,8 +49,12 @@ beforeAll(async () => {
   };
 
   const moduleRef = await Test.createTestingModule({ imports: [AppModule] })
-    .overrideProvider(PG_POOL)
-    .useValue({ query })
+    .overrideProvider(DataSource)
+    .useValue({})
+    .overrideProvider(getRepositoryToken(Webhook))
+    .useValue(webhooksRepo)
+    .overrideProvider(getRepositoryToken(Sale))
+    .useValue(salesRepo)
     .overrideProvider(DiscordService)
     .useValue(discord)
     .compile();
