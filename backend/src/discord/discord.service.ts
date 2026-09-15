@@ -3,12 +3,31 @@ import { WebhookClient } from "discord.js";
 import type { Pool } from "pg";
 import { PG_POOL } from "../db/db.module.js";
 
+const DISCORD_WEBHOOK_PATH = /^\/api\/webhooks\/\d{17,19}\/\S+$/;
+
+function assertDiscordWebhookUrl(url: string): void {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    throw new Error("Invalid Discord webhook URL");
+  }
+  if (
+    parsed.protocol !== "https:" ||
+    (parsed.hostname !== "discord.com" && parsed.hostname !== "discordapp.com") ||
+    !DISCORD_WEBHOOK_PATH.test(parsed.pathname)
+  ) {
+    throw new Error("URL is not an allowed Discord webhook");
+  }
+}
+
 @Injectable()
 export class DiscordService {
   constructor(@Inject(PG_POOL) private readonly pool: Pool) {}
 
   async getFromWebhook(url: string): Promise<Response> {
     try {
+      assertDiscordWebhookUrl(url);
       const response = await fetch(url, {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -24,6 +43,7 @@ export class DiscordService {
   }
 
   async sendToDiscordWebhook(url: string, payload: any): Promise<void> {
+    assertDiscordWebhookUrl(url);
     await new WebhookClient({ url }).send(payload);
   }
 

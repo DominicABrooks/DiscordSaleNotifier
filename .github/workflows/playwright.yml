@@ -6,6 +6,10 @@ on:
     branches: [ main, master ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: write  # upload-artifact steps
+
 jobs:
   test:
     timeout-minutes: 60
