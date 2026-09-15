@@ -11,7 +11,9 @@
     "setup:test": "cross-env NODE_ENV=test node dist/db/migrations/setup_db.js",
     "dev": "cross-env NODE_ENV=development node dist/src/main.js",
     "test:server": "cross-env NODE_ENV=test node dist/src/main.js",
-    "batch:test": "cross-env NODE_ENV=test STEAM_CRON=off node run-batch.mjs"
+    "batch:test": "cross-env NODE_ENV=test STEAM_CRON=off node run-batch.mjs",
+    "test:unit": "vitest run",
+    "test:mutation": "stryker run"
   },
   "author": "Dominic Brooks",
   "license": "ISC",
@@ -36,10 +38,13 @@
   },
   "keywords": [],
   "devDependencies": {
-    "@types/node": "^20.14.8",
+    "@stryker-mutator/core": "^10.0.0",
+    "@stryker-mutator/vitest-runner": "^10.0.0",
+    "@types/node": "^22.20.2",
     "@types/pg": "^8.11.6",
     "@types/swagger-ui-express": "^4.1.6",
     "@types/validator": "^13.12.0",
-    "typescript": "^5.5.2"
+    "typescript": "^5.5.2",
+    "vitest": "^3.2.4"
   }
 }

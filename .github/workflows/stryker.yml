@@ -1,0 +1,47 @@
+name: Stryker Mutation Tests
+
+on:
+  schedule:
+    # Weekly on Mondays at 06:00 UTC (mutation runs are slow; not per-push)
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+concurrency:
+  group: stryker-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  mutation:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+
+      - name: Install dependencies (backend)
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm run test:unit
+
+      - name: Run Stryker mutation tests
+        run: npm run test:mutation
+
+      - name: Upload mutation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mutation-report
+          path: backend/reports/mutation/
+          retention-days: 30

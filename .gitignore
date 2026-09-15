@@ -22,3 +22,6 @@ yarn-error.log*
 *-dev.err.log
 *-test.log
 *-test.err.log
+
+backend/reports/
+backend/.stryker-tmp/
